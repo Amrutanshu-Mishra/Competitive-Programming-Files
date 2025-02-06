@@ -72,45 +72,115 @@ ll modexp(ll a)
 {
      return binexp(a, M - 2, M);
 }
+
+int helper(string &s1, string s2)
+{
+     int count = 0;
+     string s3 = "";
+     for (int i = 0; i < s1.size(); i += 3)
+     {
+          s3 = "";
+          for (int j = i; j < i + 3; j++)
+          {
+               if (j == s1.size())
+               {
+                    break;
+               }
+               s3 += s1[j];
+          }
+          int a = 0;
+          int b = 0;
+          while (a < s3.size())
+          {
+               if (s3[a] != s2[b])
+               {
+                    count++;
+               }
+               a++;
+               b++;
+          }
+     }
+     return count;
+}
+
 void solve()
 {
-     int n,m1,m2;
-     cin>>n>>m1>>m2;
-     set<pair<int,int>>set1;
-     set<pair<int,int>>set2;
-     loop(0,m1){
-          int u,v;
-          cin>>u>>v;
-          if(u>v){
-               swap(u,v);
-          }
-          set1.insert({u,v});
+     ll n, p;
+     cin >> n >> p;
+     vll arr(n);
+     loop(0, n)
+     {
+          cin >> arr[i];
      }
-     loop(0,m2){
-          int u,v;
-          cin>>u>>v;
-          if(u>v){
-               swap(u,v);
+     vi rv(n, 0);
+     vi lv(n, 0);
+     vll rm(n, 0);
+     vll lm(n, 0);
+     int tmp = -1;
+     for (int i = n - 1; i >= 0; i--)
+     {
+          if (arr[i] == 0)
+          {
+               tmp = i;
           }
-          set2.insert({u,v});
+          rv[i] = tmp;
      }
-     int count=0;
-     for(auto i:set1){
-          if(set2.find(i)==set2.end()){
-               count++;
+     tmp = -1;
+     loop(0, n)
+     {
+          if (arr[i] == 0)
+          {
+               tmp = i;
           }
+          lv[i] = tmp;
      }
-     for(auto i:set2){
-          if(set1.find(i)==set1.end()){
-               count++;
+     ll h1 = 0;
+     for (int i = n - 1; i >= 0; i--)
+     {
+          if (arr[i] == 0)
+          {
+               h1 = 0;
           }
+          h1 = max(h1, arr[i]);
+          rm[i] = h1;
      }
-     cout<<count<<endl;
+     h1 = 0;
+     for (int i = 0; i < n; i++)
+     {
+          if (arr[i] == 0)
+          {
+               h1 = 0;
+          }
+          h1 = max(h1, arr[i]);
+          lm[i] = h1;
+     }
+     vll ans(n, 0);
+     loop(0, n)
+     {
+          ll lt = INT64_MAX;
+          ll rt = INT64_MAX;
+          if (lv[i] != -1)
+          {
+               lt = lm[i] / p + (lm[i] % p != 0);
+          }
+          if (rv[i] != -1)
+          {
+               rt = rm[i] / p + (rm[i] % p != 0);
+          }
+          ans[i] = min(lt, rt);
+     }
+     loop(0, n)
+     {
+          cout << ans[i] << " ";
+     }
+     cout << endl;
 }
 int main()
 {
      int t;
+     t = 1;
      cin >> t;
+
      for (int j = 0; j < t; j++)
      {
           solve();
