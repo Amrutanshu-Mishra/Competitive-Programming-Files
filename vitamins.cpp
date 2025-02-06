@@ -74,66 +74,42 @@ ll modexp(ll a)
 }
 
 
-ll helper(vll &arr,int n,vector<string>&v,int i,int A,int B,int C,vector<vector<vector<vector<int>>>>&dp){
-     if(i==n){
-          if(A&&B&&C){
-               return 0;
-          }
-          else{
-               return 1e9;
-          }
+ll helper(vll &arr,int n,int j,ll x,vector<vll>&dp){
+     if(x<0){
+          return 0;
      }
-     if(dp[i][A][B][C]!=-1){
-          return dp[i][A][B][C];
+     if(x==0){
+          return 1;
      }
-     ll take=arr[i];
-     bool A1=A;
-     bool B1=B;
-     bool C1=C;
-     for(auto j:v[i]){
-          if(j=='A'){
-               A1=1;
-          }
-          if(j=='B'){
-               B1=1;
-          }
-          if(j=='C'){
-               C1=1;
-          }
+     if(dp[x][j]!=-1){
+          return dp[x][j];
      }
-     take+=helper(arr,n,v,i+1,A1,B1,C1,dp);
-     ll not_take=helper(arr,n,v,i+1,A,B,C,dp);
-     ll ans=min(take,not_take);
-     dp[i][A][B][C]=ans;
+     ll ans=0;
+     for(int i=j;i<n;i++){
+          ll tmp=helper(arr,n,i,x-arr[i],dp);
+          ans=(ans%M+tmp%M)%M;
+     }
+     dp[x][j]=ans;
      return ans;
 }
 void solve()
 {
-     int n;
-     cin >> n;
+     ll n,x;
+     cin>>n>>x;
      vll arr(n);
-     vector<string>v;
-     vector<pair<ll,string>>b(n);
-     loop(0, n)
-     {
-          ll a;
-          cin>>b[i].first;
-          cin>>b[i].second;
-          // cout<<b[i].first<<" "<<b[i].second<<endl;
-          arr[i]=b[i].first;
-          v.push_back(b[i].second);
+     loop(0,n){
+          cin>>arr[i];
      }
-     // loop(0,n){
-     //      cout<<arr[i]<<" ";
-     // }
-     // cout<<endl;
-     vector<vector<vector<vector<int>>>>dp(n,vector<vector<vector<int>>>(2,vector<vector<int>>(2,vector<int>(2,-1))));
-     ll ans=helper(arr,n,v,0,0,0,0,dp);
+     sort(arr.begin(),arr.end());
+     vector<vll>dp(x+1,vll(n,-1));
+     ll ans=helper(arr,n,0,x,dp);
      if(ans>=1e9){
-          ans=-1;
+          cout<<-1<<endl;
+          return;
      }
      cout<<ans<<endl;
 }
+
 int main()
 {
      int t;
