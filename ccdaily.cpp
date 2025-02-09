@@ -72,73 +72,58 @@ ll modexp(ll a)
 {
      return binexp(a, M - 2, M);
 }
-
-ll helper(vll &arr, int n, int j, ll x, vector<unordered_map<int, ll>> &dp)
-{
-     if (j == n)
-     {
-
-          if (x == 0)
-          {
-               return 1;
-          }
-          return 0;
-     }
-     if (x < 0)
-     {
-          return 0;
-     }
-     if (x == 0)
-     {
-          return 1;
-     }
-     if(arr[j]>x){
-          return 0;
-     }
-     if (dp[j][x] != 0)
-     {
-          return dp[j][x] - 1;
-     }
-     ll ans = 0;
-     
-     // cout <<n<<" " <<j << " " << x << " " << ans << endl;
-     ll tmp = helper(arr, n, j, x - arr[j], dp);
-     ll tmp2 = helper(arr, n, j + 1, x, dp);
-     ans = (ans % M + tmp % M) % M;
-     ans = (ans % M + tmp2 % M) % M;
-     // cout << j << " " << x << " " << ans << endl;
-     dp[j][x] = ans + 1;
-     // cout << j << " " << x << " " << ans << endl;
-     return ans;
-}
 void solve()
 {
-     ll n, x;
-     cin >> n >> x;
-     vll arr(n);
-     loop(0, n)
-     {
-          cin >> arr[i];
+     string a,b;
+     cin>>a>>b;
+     if(a.size()<b.size()){
+          cout<<-1<<endl;
+          return;
      }
-     sort(arr.begin(), arr.end());
 
-     // vector<unordered_map<int, ll>> dp(n + 1);
-     vector<ll>dp(x+1,0);
-     // ll ans = helper(arr, n, 0, x, dp);
-     // cout << ans << endl;
-     ll ans=0;
-     for(int i=n-1;i>=0;i--){
-          for(int j=arr[i];j<=x;j++){
-               dp[j]=m
+     int i=a.size()-1;
+     int j=b.size()-1;
+     vector<bool>to_del(i+1,true);
+     while (i>=0&&j>=0)
+     {
+          if(a[i]==b[j]){
+               to_del[i]=false;
+               i--;
+               j--;
+               
+          }
+          else{
+               i--;
           }
      }
+     if(j!=-1){
+          cout<<-1<<endl;
+          return;
+     }
+     // loop(0,to_del.size()){
+     //      cout<<to_del[i]<<" ";
+     // }
+     // cout<<endl;
+     i=0;
+     ll ans=0;
+     int curr=0;
+     
+     while(i<to_del.size()){
+          if(to_del[i]==false){
+               i++;
+          }
+          else{
+               ans+=1LL*(i+1-curr);
+               curr++;
+               i++;
+          }
+     }
+     cout<<ans<<endl;
 }
-
 int main()
 {
      int t;
-     // cin >> t;
-     t = 1;
+     cin >> t;
      for (int j = 0; j < t; j++)
      {
           solve();
