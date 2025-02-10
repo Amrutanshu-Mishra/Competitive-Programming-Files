@@ -1,132 +1,79 @@
 #include <bits/stdc++.h>
+#include <iomanip>
 using namespace std;
-#define mp make_pair
-#define fi first
-#define se second
-#define ll long long
-#define ull unsigned long long
-#define ui unsigned int
-#define us unsigned short
-#define loop(j, n) for (int i = j; i < n; i++)
+
+#define F first
+#define S second
+//#define um unordered_map
+#define us unordered_set
+//#define endl '\n';
 typedef vector<int> vi;
+typedef long long ll;
 typedef vector<vi> vvi;
-typedef pair<int, int> ii;
+typedef vector<vvi> vvvi;
 typedef vector<ll> vll;
+typedef vector<vll> vvl;
+typedef vector<double> vd;
+typedef vector<vd> vvd;
+typedef vector<vvd> vvvd;
 
-const int M = 1e9 + 7;
-int get_bit(ll n, ll pos)
-{
-     return (n & (1LL << pos)) != 0;
-}
-ll set_bit(ll n, int pos)
-{
-     n = n | (1 << pos);
-     return n;
-}
-ll clear_bit(ll n, int pos)
-{
-     int ele = 1 << pos;
-     ele = ~ele;
-     n = n & ele;
-     return n;
-}
-void update_bit(int &n, int pos, int value)
-{
-     int mark = ~(1 << pos);
-     n = n & mark;
-     n = n | (value << pos);
-}
-ll gcd(ll a, ll b)
-{
-     if (a == 0)
-     {
-          return b;
-     }
-     if (b == 0)
-     {
-          return a;
-     }
-     return gcd(b, a % b);
-}
-ll lcm(ll a, ll b)
-{
-     ll ele = a * b;
-     ll ele1 = gcd(a, b);
-     return ele / ele1;
-}
-ll binexp(ll a, ll b, ll m)
-{
-     ll result = 1;
-     while (b > 0)
-     {
-          if (b & 1)
-          {
-               result = (result * 1LL * a) % m;
-          }
-          a = (a * 1LL * a) % m;
-          b >>= 1;
-     }
-     return result;
-}
-ll modexp(ll a)
-{
-     return binexp(a, M - 2, M);
-}
-void solve()
-{
-     string a,b;
-     cin>>a>>b;
-     if(a.size()<b.size()){
-          cout<<-1<<endl;
-          return;
-     }
+typedef pair<int,int> ii;
+typedef vector<pair<int,int>> vii;
+typedef vector<pair<ll,ll>> vpl;
+typedef pair<ll,ll> pll;
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+// typedef tree<int,null_type,less_equal<int>,rb_tree_tag,
+//         tree_order_statistics_node_update> indexed_set;
 
-     int i=a.size()-1;
-     int j=b.size()-1;
-     vector<bool>to_del(i+1,true);
-     while (i>=0&&j>=0)
-     {
-          if(a[i]==b[j]){
-               to_del[i]=false;
-               i--;
-               j--;
-               
-          }
-          else{
-               i--;
-          }
-     }
-     if(j!=-1){
-          cout<<-1<<endl;
-          return;
-     }
-     // loop(0,to_del.size()){
-     //      cout<<to_del[i]<<" ";
-     // }
-     // cout<<endl;
-     i=0;
-     ll ans=0;
-     int curr=0;
-     
-     while(i<to_del.size()){
-          if(to_del[i]==false){
-               i++;
-          }
-          else{
-               ans+=1LL*(i+1-curr);
-               curr++;
-               i++;
-          }
-     }
-     cout<<ans<<endl;
+//s.find_by_order(i)--for it of position i
+//*it = s[i]
+//s.order_of_key(ele)--for lower bound index (0-based) of target
+//s.lower_bound(ele)--for iterator of lower bound of target
+//Note that using first and second both nested costs (Log^2)(n)
+
+ll mod1=1000000007;
+ll mod2=998244353;
+int inf = 1e9;
+
+void solve() {
+    int n;
+    cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    int l = 0;
+    int r = n-1;
+    vvi ind(n+1);
+    for(int i=0;i<n;i++) ind[a[i]].push_back(i);
+
+    vi ans(n,0);
+    for(int i=1;i<=n-1;i++){
+        if(ind[i].empty()) break;
+        if(ind[i].size() > 1 || ind[i][0] != l && ind[i][0] != r){
+            ans[n-i] = 1;
+            break;
+        }
+        if(ind[i][0] == l) l++;
+        else r--;
+        ans[n-i] = 1;
+    }
+    sort(a.begin(),a.end());
+    for(int i=0;i<n;i++){
+        if(a[i] != i+1){
+            for(int j: ans) cout<<j;
+            cout<<endl;
+            return;
+        }
+    }
+    ans[0] = 1;
+    for(int j: ans) cout<<j;
+    cout<<endl;
 }
-int main()
-{
-     int t;
-     cin >> t;
-     for (int j = 0; j < t; j++)
-     {
-          solve();
-     }
-     return 0;
+
+int main() {
+    ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+
+    int t=1;
+    cin>>t;
+    while(t-->0) solve();
 }
