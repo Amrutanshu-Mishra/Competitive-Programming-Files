@@ -37,6 +37,7 @@ ll mod2=998244353;
 int inf = 1e9;
 
 void solve() {
+    ll n,t;
     
 }
 
