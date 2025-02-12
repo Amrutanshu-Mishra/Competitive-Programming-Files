@@ -37,37 +37,7 @@ ll mod2=998244353;
 int inf = 1e9;
 
 void solve() {
-    int n;
-    cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++) cin>>a[i];
-    int l = 0;
-    int r = n-1;
-    vvi ind(n+1);
-    for(int i=0;i<n;i++) ind[a[i]].push_back(i);
-
-    vi ans(n,0);
-    for(int i=1;i<=n-1;i++){
-        if(ind[i].empty()) break;
-        if(ind[i].size() > 1 || ind[i][0] != l && ind[i][0] != r){
-            ans[n-i] = 1;
-            break;
-        }
-        if(ind[i][0] == l) l++;
-        else r--;
-        ans[n-i] = 1;
-    }
-    sort(a.begin(),a.end());
-    for(int i=0;i<n;i++){
-        if(a[i] != i+1){
-            for(int j: ans) cout<<j;
-            cout<<endl;
-            return;
-        }
-    }
-    ans[0] = 1;
-    for(int j: ans) cout<<j;
-    cout<<endl;
+    
 }
 
 int main() {
