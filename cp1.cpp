@@ -303,56 +303,7 @@ public:
 
 void solve()
 {
-    int n;
-    cin>>n;
-    int arr[n][n];
-    loop(0,n){
-        for(int j=0;j<n;j++){
-            cin>>arr[i][j];
-        }
-    }
-    // loop(0,n){
-    //     for(int j=0;j<n;j++){
-    //         cout<<arr[i][j]<<" ";
-    //     }
-    //     cout<<endl;
-    // }
-    vi ans;
-
-    loop(0,n){
-        int count=0;
-        for(int j=n-1;j>=0;j--){
-            if(arr[i][j]!=1){  
-                break;
-            }
-            count++;
-        }
-        ans.push_back(count);
-    }
-    // for(int i=0;i<ans.size();i++){
-    //     cout<<ans[i]<<" ";
-    // }
-    // cout<<endl;
-    sort(ans.begin(),ans.end());
-    if(ans[0]==0){
-        int curr=1;
-        for(int i=1;i<ans.size();i++){
-            if(ans[i]<curr){
-                continue;
-            }
-            curr++;
-        }
-        cout<<curr<<endl;
-        return;    
-    }
-    int curr=0;
-    for(int i=0;i<ans.size();i++){
-        if(ans[i]<curr){
-            continue;
-        }
-        curr++;
-    }
-    cout<<curr<<endl;
+    
 }
 
 int main()
