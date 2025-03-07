@@ -297,7 +297,7 @@ public:
 
 // Reducing a problem into smaller subproblems, commonly used with Dynamic Programming or Inductive Proofs.
 
-// Considering the Decision Version of the Problem instead. Especially useful in Counting problems, where you need to count number of good subsequences for example.
+
 
 // Formalizing the Problem
 
