@@ -51,13 +51,15 @@ ll binexp(ll a, ll b, ll m)
 //      return dp[l][curr];
 // }
 
-void helper(string curr,int n,vector<string>&v){
-    if(n==0){
+void helper(string curr, int n, vector<string> &v)
+{
+    if (n == 0)
+    {
         v.push_back(curr);
         return;
     }
-    helper(curr+"0",n-1,v);
-    helper(curr+"1",n-1,v);
+    helper(curr + "0", n - 1, v);
+    helper(curr + "1", n - 1, v);
 }
 int get_bit(ll n, ll pos)
 {
@@ -70,46 +72,79 @@ ll set_bit(ll n, int pos)
 }
 void solve()
 {
-    int m,n,k;
-    cin>>n>>m>>k;
-    vll arr(n);
+    int n;
+    cin>>n;
+    vector<pair<ll,ll>>v;
     loop(0,n){
-        cin>>arr[i];
+        ll x,y;
+        cin>>x>>y;
+        v.push_back({x,y});
     }
-    ll ans=0;
-    loop(0,m){
-        int num=m-1-i;
-        if(num<=k){
-            ans=max<ll>(ans,arr[i]);
+    sort(v.begin(),v.end());
+    vector<set<double>>slo1(n);
+    vector<set<double>>slo2(n);
+    int count=0;
+    for(int i=0;i<n;i++){
+        
+        for(int j=i+1;j<n;j++){
+            double num=v[j].second-v[i].second;
+            double denom=v[j].first-v[i].first;
+            // cout<<num<<" "<<denom<<endl;
+            double pr=denom;
+            if(num!=0){
+                pr=pr*num;
+            }
+            if(denom==0){
+                pr=num;
+            }
+            if(abs(denom)<=1e-11){
+                if(pr>=0){
+                    // cout<<1e18<<" ";
+                    if(slo1[i].find(1e18)==slo1[i].end()&&slo2[j].find(1e18)==slo2[j].end()){
+                        // cout<<i<<endl;
+                        
+                        slo1[i].insert(1e18);
+                        slo2[j].insert(1e18);
+                        count++;
+                    }
+                }
+                else{
+                    if(slo1[i].find(-1e18)==slo1[i].end()&&slo2[j].find(-1e18)==slo2[j].end()){
+                        // cout<<i<<endl;
+                        
+                        slo1[i].insert(-1e18);
+                        slo2[j].insert(-1e18);
+                        count++;
+                    }
+                }
+                continue;
+            }
+            double sl=(num/denom);
+            // cout<<sl<<" ";
+            
+            
+                
+            if(slo1[i].find(sl)==slo1[i].end()&&slo2[j].find(sl)==slo2[j].end()){
+                count++;
+                slo1[i].insert(sl);
+                slo2[j].insert(sl);
+            }
+            
         }
+        // cout<<endl;
+        // cout<<count<<endl;
     }
-    for(int i=n-1;i>=n-m;i--){
-        int num=m-1-(n-1-i);
-        if(num<=k){
-            ans=max(ans,arr[i]);
-        }
-    }
-    cout<<ans<<endl;
+    cout<<count<<endl;
 }
 
 int main()
 {
-    ll d,r;
-    cin>>r>>d;
-    ll n;
-    cin>>n;
-    int count=0;
-    for(int i=0;i<n;i++){
-        ll x,y,r1;
-        cin>>x>>y>>r1;
-        ll dist=x*x+y*y;
-        // cout<<r<<" "<<d<<" "<<r1<<" "<<dist<<endl;
-        // cout<<r-d+1<<" "<<r1<<" "<<dist<<endl;
-        // cout<<((r-d+r1)*(r-d+r1))<<" "<<dist<<" "<<((r-r1)*(r-r1))<<endl;
-        if((r-d+r1)*(r-d+r1)<=dist&&dist<=(r-r1)*(r-r1)){
-            // cout<<(r-d+r1)*(r-d+r1)<<" "<<dist<<" "<<(r-r1)*(r-r1)<<endl;
-            count++;
-        }
+    int t;
+    t=1;
+    // cin>>t;
+    while (t--)
+    {
+        solve();
     }
-    cout<<count<<endl;
+    
 }
