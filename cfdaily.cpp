@@ -70,78 +70,90 @@ ll set_bit(ll n, int pos)
     n = n | (1 << pos);
     return n;
 }
+ll clear_bit(ll n, int pos)
+{
+    int ele = 1 << pos;
+    ele = ~ele;
+    n = n & ele;
+    return n;
+}
 void solve()
 {
-    int n;
-    cin>>n;
-    vector<pair<ll,ll>>v;
+    ll n,m;
+    cin>>n>>m;
+    long long x[n];
     loop(0,n){
-        ll x,y;
-        cin>>x>>y;
-        v.push_back({x,y});
+        cin>>x[i];
     }
-    sort(v.begin(),v.end());
-    vector<set<double>>slo1(n);
-    vector<set<double>>slo2(n);
-    int count=0;
+    long long r[n];
+    ll rm=-1;
+    loop(0,n){
+        cin>>r[i];
+        rm=max(rm,r[i]);
+    }
+    // vector<pair<ll,ll>>v;
+    // loop(0,n){
+    //     v.push_back({x[i],r[i]});
+    // }
+    // sort(v.begin(),v.end());
+    // for(auto i:v){
+    //     cout<<i.first<<" "<<i.second<<endl;
+    // }
+    // cout<<endl;
+    ll ans=0;
+    vector<vector<pair<ll,ll>>>s(rm+1);
+
     for(int i=0;i<n;i++){
-        
-        for(int j=i+1;j<n;j++){
-            double num=v[j].second-v[i].second;
-            double denom=v[j].first-v[i].first;
-            // cout<<num<<" "<<denom<<endl;
-            double pr=denom;
-            if(num!=0){
-                pr=pr*num;
+        for(int j=0;j<=r[i];j++){
+            ll xmi=x[i]-sqrt(double(r[i]*r[i]-j*j));
+            if(xmi!=x[i]-sqrt(double(r[i]*r[i]-j*j))&&x[i]-sqrt(double(r[i]*r[i]-j*j))>0){
+                xmi++;
             }
-            if(denom==0){
-                pr=num;
+            ll xma=x[i]+sqrtl(double(r[i]*r[i]-j*j));
+            s[j].push_back({xmi,xma});
+        }
+    }
+    
+    loop(0,rm+1){
+        stack<pair<ll,ll>>s1;
+        sort(s[i].begin(),s[i].end());
+        for(int j=0;j<s[i].size();j++){
+            if(s1.empty()){
+                s1.push(s[i][j]);
             }
-            if(abs(denom)<=1e-11){
-                if(pr>=0){
-                    // cout<<1e18<<" ";
-                    if(slo1[i].find(1e18)==slo1[i].end()&&slo2[j].find(1e18)==slo2[j].end()){
-                        // cout<<i<<endl;
-                        
-                        slo1[i].insert(1e18);
-                        slo2[j].insert(1e18);
-                        count++;
-                    }
+            else{
+                pair<ll,ll>p1=s1.top();
+                s1.pop();
+                if(s[i][j].first<=p1.second){
+                    s1.push({min(p1.first,s[i][j].first),max(p1.second,s[i][j].second)});
                 }
                 else{
-                    if(slo1[i].find(-1e18)==slo1[i].end()&&slo2[j].find(-1e18)==slo2[j].end()){
-                        // cout<<i<<endl;
-                        
-                        slo1[i].insert(-1e18);
-                        slo2[j].insert(-1e18);
-                        count++;
-                    }
+                    s1.push(p1);
+                    s1.push(s[i][j]);
                 }
-                continue;
             }
-            double sl=(num/denom);
-            // cout<<sl<<" ";
-            
-            
-                
-            if(slo1[i].find(sl)==slo1[i].end()&&slo2[j].find(sl)==slo2[j].end()){
-                count++;
-                slo1[i].insert(sl);
-                slo2[j].insert(sl);
-            }
-            
         }
-        // cout<<endl;
-        // cout<<count<<endl;
+        // cout<<i<<endl;
+        while(s1.size()){
+            pair<ll,ll>p1=s1.top();
+            s1.pop();
+            // cout<<p1.first<<" "<<p1.second<<endl;
+            ans+=p1.second-p1.first+1;
+            if(i!=0){
+                ans+=p1.second-p1.first+1;
+            }
+        }
+        // cout<<ans<<endl;
     }
-    cout<<count<<endl;
+    
+    cout<<ans<<endl;
 }
 
 int main()
 {
     int t;
     t=1;
-    // cin>>t;
+    cin>>t;
     while (t--)
     {
         solve();

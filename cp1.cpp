@@ -308,12 +308,14 @@ void solve()
 
 int main()
 {
-    int t;
-    t = 1;
-    cin>>t;
+    // int t;
+    // t = 1;
+    // cin>>t;
     
-    for (int j = 0; j < t; j++)
-    {
-        solve();
-    }
+    // for (int j = 0; j < t; j++)
+    // {
+    //     solve();
+    // }
+    ll a=-3.6;
+    cout<<a<<endl;
 }
