@@ -77,86 +77,41 @@ ll clear_bit(ll n, int pos)
     n = n & ele;
     return n;
 }
-void solve()
-{
-    ll n,m;
-    cin>>n>>m;
-    long long x[n];
-    loop(0,n){
-        cin>>x[i];
-    }
-    long long r[n];
-    ll rm=-1;
-    loop(0,n){
-        cin>>r[i];
-        rm=max(rm,r[i]);
-    }
-    // vector<pair<ll,ll>>v;
-    // loop(0,n){
-    //     v.push_back({x[i],r[i]});
-    // }
-    // sort(v.begin(),v.end());
-    // for(auto i:v){
-    //     cout<<i.first<<" "<<i.second<<endl;
-    // }
-    // cout<<endl;
-    ll ans=0;
-    vector<vector<pair<ll,ll>>>s(rm+1);
 
+void solve(){
+    int n;
+    cin>>n;
+    pair<ll,pair<ll,ll>>arr[n];
     for(int i=0;i<n;i++){
-        for(int j=0;j<=r[i];j++){
-            ll xmi=x[i]-sqrt(double(r[i]*r[i]-j*j));
-            if(xmi!=x[i]-sqrt(double(r[i]*r[i]-j*j))&&x[i]-sqrt(double(r[i]*r[i]-j*j))>0){
-                xmi++;
-            }
-            ll xma=x[i]+sqrtl(double(r[i]*r[i]-j*j));
-            s[j].push_back({xmi,xma});
+        int l,r,p;
+        cin>>l>>r>>p;
+        arr[i]={l,{r,p}};
+    }
+    sort(arr,arr+n);
+    ll dp[n+1];
+    for(int i=n;i>=0;i--){
+        if(i==n){
+            dp[i]=0;
+        }
+        else{
+            ll ans=dp[i+1];
+            ll nextVal=arr[i].second.first;
+            pair<ll,pair<ll,ll>>p1={nextVal,{M,M}};
+            int it=upper_bound(arr,arr+n,p1)-arr;
+            ans=max<ll>(ans,arr[i].second.second+dp[it]);
+            dp[i]=ans;
         }
     }
-    
-    loop(0,rm+1){
-        stack<pair<ll,ll>>s1;
-        sort(s[i].begin(),s[i].end());
-        for(int j=0;j<s[i].size();j++){
-            if(s1.empty()){
-                s1.push(s[i][j]);
-            }
-            else{
-                pair<ll,ll>p1=s1.top();
-                s1.pop();
-                if(s[i][j].first<=p1.second){
-                    s1.push({min(p1.first,s[i][j].first),max(p1.second,s[i][j].second)});
-                }
-                else{
-                    s1.push(p1);
-                    s1.push(s[i][j]);
-                }
-            }
-        }
-        // cout<<i<<endl;
-        while(s1.size()){
-            pair<ll,ll>p1=s1.top();
-            s1.pop();
-            // cout<<p1.first<<" "<<p1.second<<endl;
-            ans+=p1.second-p1.first+1;
-            if(i!=0){
-                ans+=p1.second-p1.first+1;
-            }
-        }
-        // cout<<ans<<endl;
-    }
-    
-    cout<<ans<<endl;
+    cout<<dp[0]<<endl;
 }
 
 int main()
 {
     int t;
-    t=1;
-    cin>>t;
+    t = 1;
+    // cin >> t;
     while (t--)
     {
         solve();
     }
-    
 }
