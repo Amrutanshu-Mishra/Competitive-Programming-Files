@@ -79,30 +79,18 @@ ll clear_bit(ll n, int pos)
 }
 
 void solve(){
-    int n;
-    cin>>n;
-    pair<ll,pair<ll,ll>>arr[n];
-    for(int i=0;i<n;i++){
-        int l,r,p;
-        cin>>l>>r>>p;
-        arr[i]={l,{r,p}};
+    int n,a,b;
+    cin>>n>>a>>b;
+    vll arr(n);
+    loop(0,n) cin>>arr[i];
+    ll ans1=INT64_MIN;
+    int count=0;
+    ll curr=0;
+    loop(0,n){
+        curr+=arr[i];
+        count++;
+        if(count)
     }
-    sort(arr,arr+n);
-    ll dp[n+1];
-    for(int i=n;i>=0;i--){
-        if(i==n){
-            dp[i]=0;
-        }
-        else{
-            ll ans=dp[i+1];
-            ll nextVal=arr[i].second.first;
-            pair<ll,pair<ll,ll>>p1={nextVal,{M,M}};
-            int it=upper_bound(arr,arr+n,p1)-arr;
-            ans=max<ll>(ans,arr[i].second.second+dp[it]);
-            dp[i]=ans;
-        }
-    }
-    cout<<dp[0]<<endl;
 }
 
 int main()
