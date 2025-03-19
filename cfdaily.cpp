@@ -55,71 +55,83 @@ ll clear_bit(ll n, int pos)
     return n;
 }
 
-bool checker(vll &roo,vll &rou,int n,int m,ll mid){
-    loop(0,n){
-        int idx1=lower_bound(rou.begin(),rou.end(),roo[i]-mid)-rou.begin();
-        if(idx1==m){
+bool checker(vll &roo, vll &rou, int n, int m, ll mid)
+{
+    loop(0, n)
+    {
+        int idx1 = lower_bound(rou.begin(), rou.end(), roo[i] - mid) - rou.begin();
+        if (idx1 == m)
+        {
             return false;
         }
-        if(abs(roo[i]-rou[idx1])<=mid){
+        if (abs(roo[i] - rou[idx1]) <= mid)
+        {
             continue;
         }
-        else{
+        else
+        {
             return false;
         }
     }
     return true;
 }
-bool cmp(pair<pair<ll,ll>,pair<ll,ll>>a,pair<pair<ll,ll>,pair<ll,ll>>b){
-    if(a.second.first!=b.second.first){
-        return a.second.first<b.second.first;
+bool cmp(pair<pair<ll, ll>, pair<ll, ll>> a, pair<pair<ll, ll>, pair<ll, ll>> b)
+{
+    if (a.second.first != b.second.first)
+    {
+        return a.second.first < b.second.first;
     }
-    return a.second.second<b.second.second;
+    return a.second.second < b.second.second;
 }
-vector<pair<pair<ll,ll>,pair<ll,ll>>>v;
-ll dfs(vvi &adj,int n,int i,vector<bool>&vis){
-    if(vis[i]){
+vector<pair<pair<ll, ll>, pair<ll, ll>>> v;
+ll dfs(vvi &adj, int n, int i, vector<bool> &vis)
+{
+    if (vis[i])
+    {
         return 0;
     }
-    ll ans=v[i].second.second;
-    vis[i]=true;
+    ll ans = v[i].second.second;
+    vis[i] = true;
 
-    ll tmp=0;
-    for(auto j:adj[i]){
-        if(!vis[j]){
-            tmp=max(tmp,dfs(adj,n,j,vis));
+    ll tmp = 0;
+    for (auto j : adj[i])
+    {
+        if (!vis[j])
+        {
+            tmp = max(tmp, dfs(adj, n, j, vis));
         }
     }
     // vis[i]=false;
-    return ans+tmp;
+    return ans + tmp;
 }
 void solve()
 {
-    ll n;
-    cin>>n;
-    v.clear();
+    int n,k;
+    cin>>n>>k;
+    vll arr(n);
     loop(0,n){
-        ll x,y,t1,p1;
-        cin>>x>>y>>t1>>p1;
-        v.push_back({{x,y},{t1,p1}});
+        cin>>arr[i];
     }
-    sort(v.begin(),v.end(),cmp);
-    vvi adj(n);
-    for(int i=0;i<n;i++){
-        for(int j=i+1;j<n;j++){
-            if(abs(v[i].first.first-v[j].first.first)+abs(v[i].first.second-v[j].first.second)<=v[j].second.first-v[i].second.first){
-                adj[i].push_back(j);
-                adj[j].push_back(i);
-            }
+    if(k>=2){
+        sort(arr.begin(),arr.end());
+        ll ans=0;
+        for(int i=0;i<=k;i++){
+            ans+=arr[n-i-1];
         }
+        cout<<ans<<endl;
+        return;
     }
-    vector<bool>vis(n,false);
-    vector<bool>vis1(n,false);
     ll ans=0;
     for(int i=0;i<n;i++){
-        
-        ans=max(ans,dfs(adj,n,i,vis));
-        vis=vector<bool>(n,false);
+        if(i==0){
+            ans=max(ans,arr[0]+arr[n-1]);
+        }
+        else if(i==n-1){
+            ans=max(ans,arr[0]+arr[n-1]);
+        }
+        else{
+            ans=max(ans,arr[i]+max(arr[0],arr[n-1]));
+        }
     }
     cout<<ans<<endl;
 }
@@ -128,7 +140,7 @@ int main()
 {
     int t;
     t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
