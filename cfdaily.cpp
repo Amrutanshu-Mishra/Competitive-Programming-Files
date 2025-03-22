@@ -106,34 +106,22 @@ ll dfs(vvi &adj, int n, int i, vector<bool> &vis)
 }
 void solve()
 {
-    int n,k;
-    cin>>n>>k;
-    vll arr(n);
+    int n,x;
+    cin>>n>>x;
+    vi arr(n);
     loop(0,n){
         cin>>arr[i];
     }
-    if(k>=2){
-        sort(arr.begin(),arr.end());
-        ll ans=0;
-        for(int i=0;i<=k;i++){
-            ans+=arr[n-i-1];
-        }
-        cout<<ans<<endl;
-        return;
+    int sum=0;
+    loop(0,n){
+        sum+=arr[i];
     }
-    ll ans=0;
-    for(int i=0;i<n;i++){
-        if(i==0){
-            ans=max(ans,arr[0]+arr[n-1]);
-        }
-        else if(i==n-1){
-            ans=max(ans,arr[0]+arr[n-1]);
-        }
-        else{
-            ans=max(ans,arr[i]+max(arr[0],arr[n-1]));
-        }
+    if(sum%n||sum/n!=x){
+        cout<<"NO"<<endl;
     }
-    cout<<ans<<endl;
+    else{
+        cout<<"YES"<<endl;
+    }
 }
 
 int main()
