@@ -55,34 +55,7 @@ ll clear_bit(ll n, int pos)
     return n;
 }
 
-bool checker(vll &roo, vll &rou, int n, int m, ll mid)
-{
-    loop(0, n)
-    {
-        int idx1 = lower_bound(rou.begin(), rou.end(), roo[i] - mid) - rou.begin();
-        if (idx1 == m)
-        {
-            return false;
-        }
-        if (abs(roo[i] - rou[idx1]) <= mid)
-        {
-            continue;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    return true;
-}
-bool cmp(pair<pair<ll, ll>, pair<ll, ll>> a, pair<pair<ll, ll>, pair<ll, ll>> b)
-{
-    if (a.second.first != b.second.first)
-    {
-        return a.second.first < b.second.first;
-    }
-    return a.second.second < b.second.second;
-}
+
 vector<pair<pair<ll, ll>, pair<ll, ll>>> v;
 ll dfs(vvi &adj, int n, int i, vector<bool> &vis)
 {
@@ -104,33 +77,67 @@ ll dfs(vvi &adj, int n, int i, vector<bool> &vis)
     // vis[i]=false;
     return ans + tmp;
 }
+
+bool checker(ll mid,ll n,ll m,ll k){
+    ll s1=0;
+    ll e1=m;
+    ll a1=0;
+    
+    while(s1<=e1){
+        ll x=(s1+e1)/2;
+        if((x-1)*(mid+1)+mid<=m){
+            a1=max(a1,x);
+            s1=x+1;
+        }
+        else{
+            e1=x-1;
+        }
+    }
+    ll tmp=a1*mid;
+    if((m-(a1-1)*(mid+1)-mid)>0){
+        tmp+=m-(a1-1)*(mid+1)-mid-1;
+    }
+    return (tmp*n>=k);
+}
 void solve()
 {
-    int n,x;
-    cin>>n>>x;
-    vi arr(n);
-    loop(0,n){
-        cin>>arr[i];
-    }
-    int sum=0;
-    loop(0,n){
-        sum+=arr[i];
-    }
-    if(sum%n||sum/n!=x){
-        cout<<"NO"<<endl;
-    }
-    else{
-        cout<<"YES"<<endl;
-    }
-}
+    ll n;
 
+}
+int seive[10000000+1];
+int dp[10000000+1];
 int main()
 {
-    int t;
-    t = 1;
-    cin >> t;
-    while (t--)
-    {
-        solve();
+    for(int i=0;i<=10000000;i++){
+        seive[i]=i;
     }
+    
+    for(int i=2;i*i<=10000000;i++){
+        if(seive[i]==0){
+            for(int j=i*i;j<=10000000;j+=i){
+                seive[j]=i;
+            }
+            // seive[i]=1;
+        }
+    }
+    for(int i=0;i<=20;i++){
+        cout<<seive[i]<<" ";
+    }
+    cout<<endl;
+    cout<<seive[2]<<endl;
+    // int t;
+    // t = 1;
+    // cin >> t;
+    // while (t--)
+    // {
+    //     ll n;
+    //     cin>>n;
+    //     ll fin=0;
+        
+    //     for(int i=n;i>0;i--){
+            
+    //         fin+=seive[i];
+    //     }
+    //     cout<<fin<<endl;
+    // }
 }
