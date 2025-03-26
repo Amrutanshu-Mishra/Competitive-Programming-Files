@@ -111,33 +111,40 @@ int main()
     for(int i=0;i<=10000000;i++){
         seive[i]=i;
     }
-    
+    vi prim;
     for(int i=2;i*i<=10000000;i++){
-        if(seive[i]==0){
+        if(seive[i]==i){
+            // prim.push_back(i);
             for(int j=i*i;j<=10000000;j+=i){
                 seive[j]=i;
             }
-            // seive[i]=1;
+            
         }
     }
-    for(int i=0;i<=20;i++){
-        cout<<seive[i]<<" ";
+    for(int i=2;i<=10000000;i++){
+        if(seive[i]==i){
+            prim.push_back(i);
+        }
     }
-    cout<<endl;
-    cout<<seive[2]<<endl;
-    // int t;
-    // t = 1;
-    // cin >> t;
-    // while (t--)
-    // {
-    //     ll n;
-    //     cin>>n;
-    //     ll fin=0;
-        
-    //     for(int i=n;i>0;i--){
-            
-    //         fin+=seive[i];
-    //     }
-    //     cout<<fin<<endl;
+    // for(int i=0;i<100;i++){
+    //     cout<<prim[i]<<" ";
     // }
+    // cout<<endl;
+    int t;
+    t = 1;
+    cin >> t;
+    while (t--)
+    {
+        ll n;
+        cin>>n;
+        ll fin=0;
+        
+        for(auto i:prim){
+            if(i>n){
+                break;
+            }
+            fin+=n/i;
+        }
+        cout<<fin<<endl;
+    }
 }
