@@ -101,50 +101,79 @@ bool checker(ll mid,ll n,ll m,ll k){
 }
 void solve()
 {
-    ll n;
-
+    string s;
+    cin>>s;
+    ll n=s.size();
+    int pos;
+    cin>>pos;
+    if(s.size()==1){
+        cout<<s[0]<<endl;
+        return;
+    }
+    ll st=0;
+    ll e=s.size();
+    ll ans=s.size();
+    while (st<=e)
+    {
+        ll mid=(st+e)/2;
+        ll tmp=n*(n+1)/2-(n-mid)*(n-mid-1)/2;
+        if(tmp>=pos){
+            ans=min(ans,mid);
+            e=mid-1;
+        }
+        else{
+            st=mid+1;
+        }
+    }
+    int i=0;
+    int j=1;
+    map<int,int>m1;
+    vector<int>sto;
+    int curr=1;
+    while (i<n)
+    {
+        if(j>=n){
+            break;
+        }
+        if(j<n){
+            if(s[i]>s[j]){
+                sto.push_back(i);
+                m1[i]=1;
+                if(i==0){
+                    i=j;
+                    j++;
+                    continue;
+                }
+                else{
+                    i--;
+                }
+            }
+            else{
+                i=j;
+                j++;
+                continue;
+            }
+        }
+    }
+    for(int i=0;i<n;i++){
+        if(m1[i]==0){
+            sto.push_back(i);
+        }
+    }
+    map<int,int>m2;
+    for(int i=0;i<n;i++){
+        
+    }
 }
-int seive[10000000+1];
-int dp[10000000+1];
+
 int main()
 {
-    for(int i=0;i<=10000000;i++){
-        seive[i]=i;
-    }
-    vi prim;
-    for(int i=2;i*i<=10000000;i++){
-        if(seive[i]==i){
-            // prim.push_back(i);
-            for(int j=i*i;j<=10000000;j+=i){
-                seive[j]=i;
-            }
-            
-        }
-    }
-    for(int i=2;i<=10000000;i++){
-        if(seive[i]==i){
-            prim.push_back(i);
-        }
-    }
-    // for(int i=0;i<100;i++){
-    //     cout<<prim[i]<<" ";
-    // }
-    // cout<<endl;
+    
     int t;
     t = 1;
     cin >> t;
     while (t--)
     {
-        ll n;
-        cin>>n;
-        ll fin=0;
-        
-        for(auto i:prim){
-            if(i>n){
-                break;
-            }
-            fin+=n/i;
-        }
-        cout<<fin<<endl;
+        solve();
     }
 }
