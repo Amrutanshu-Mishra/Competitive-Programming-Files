@@ -104,12 +104,12 @@ void solve()
     string s;
     cin>>s;
     ll n=s.size();
-    int pos;
+    ll pos;
     cin>>pos;
-    if(s.size()==1){
-        cout<<s[0]<<endl;
-        return;
-    }
+    // if(s.size()==1){
+    //     cout<<s[0]<<endl;
+    //     return;
+    // }
     ll st=0;
     ll e=s.size();
     ll ans=s.size();
@@ -125,45 +125,49 @@ void solve()
             st=mid+1;
         }
     }
-    int i=0;
-    int j=1;
-    map<int,int>m1;
-    vector<int>sto;
-    int curr=1;
-    while (i<n)
-    {
-        if(j>=n){
-            break;
-        }
-        if(j<n){
-            if(s[i]>s[j]){
-                sto.push_back(i);
-                m1[i]=1;
-                if(i==0){
-                    i=j;
-                    j++;
-                    continue;
-                }
-                else{
-                    i--;
-                }
-            }
-            else{
-                i=j;
-                j++;
-                continue;
+    pos-=n*(n+1)/2-(n-ans)*(n-ans+1)/2;
+    pos--;
+    // cout<<ans<<" "<<pos<<endl;
+
+    vector<int>v1(26,n);
+    vector<set<pair<int,int>>>v2(n+1);
+    for(int i=n-1;i>=0;i--){
+        int idx=n;
+        for(int j=0;j<(s[i]-'a');j++){
+            if(v1[j]!=n){
+                idx=min(idx,v1[j]);
             }
         }
-    }
-    for(int i=0;i<n;i++){
-        if(m1[i]==0){
-            sto.push_back(i);
-        }
-    }
-    map<int,int>m2;
-    for(int i=0;i<n;i++){
         
+        v1[s[i]-'a']=min(v1[s[i]-'a'],i);
+        v2[idx].insert({26-(s[i]-'a'),i});
     }
+    // for(int i=0;i<=n;i++){
+    //     cout<<i<<": ";
+    //     for(auto j:v2[i]){
+    //         cout<<j.second<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    vector<int>tmp;
+    for(int i=0;i<=n;i++){
+        for(auto j:v2[i]){
+            tmp.push_back(j.second);
+        }
+    }
+    map<int,int>m1;
+    for(int i=0;i<tmp.size();i++){
+        m1[tmp[i]]=i+1;
+    }
+    
+    string s3="";
+    for(int i=0;i<n;i++){
+        if(m1[i]<=ans){
+            continue;
+        }
+        s3+=s[i];
+    }
+    cout<<s3[pos];
 }
 
 int main()
