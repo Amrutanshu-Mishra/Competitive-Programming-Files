@@ -74,75 +74,54 @@ void seive(){
     
 }
 void solve(){
-    int n;
-    cin>>n;
-    vector<string>v;
+    int n,q,c;
+    cin>>n>>q>>c;
+    vector<vector<vector<int>>>v(c+1,vector<vector<int>>(101,vector<int>(101,0)));
     loop(0,n){
-        string s;
-        cin>>s;
-        v.push_back(s);
+        int x,y,s;
+        cin>>x>>y>>s;
+        v[s][x][y]++;
     }
-    vector<vector<int>>arr1(n,vector<int>(n,1));
-    for(int i=0;i<n;i++){
-        for(int j=1;j<n;j++){
-            if(v[i][j]==v[i][j-1]){
-                arr1[i][j]=1+arr1[i][j-1];
+    for(int k=0;k<=c;k++){
+        for(int i=0;i<101;i++){
+            for(int j=1;j<101;j++){
+                v[k][i][j]+=v[k][i][j-1];
             }
-            else{
-                arr1[i][j]=1;
+        }
+        
+    }
+    for(int k=0;k<=c;k++){
+        for(int j=0;j<101;j++){
+            for(int i=1;i<101;i++){
+                v[k][i][j]+=v[k][i-1][j];
             }
         }
     }
-    vector<vector<int>>arr2(n,vector<int>(n,1));
-    for(int i=1;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(v[i][j]==v[i-1][j]){
-                arr2[i][j]=1+arr2[i-1][j];
-            }
-            else{
-                arr2[i][j]=1;
-            }
+    while (q--)
+    {
+        ll t,x1,y1,x2,y2;
+        cin>>t>>x1>>y1>>x2>>y2;
+        ll ans=0;
+        for(int k=0;k<=c;k++){
+            ll tmp1=0;
+            ll tmp2=0;
+            ll tmp3=0;
+            tmp1=v[k][x1-1][y2];
+            tmp2=v[k][x2][y1-1];
+            tmp3=v[k][x1-1][y1-1];
+            ll tmp4=v[k][x2][y2]-tmp1-tmp2+tmp3;
+            ans+=tmp4*((t+k)%(c+1));
         }
+        cout<<ans<<endl;
     }
-    vector<vector<int>>arr3(n,vector<int>(n,1));
-    for(int i=0;i<n;i++){
-        for(int j=n-2;j>=0;j--){
-            if(v[i][j]==v[i][j+1]){
-                arr3[i][j]=1+arr3[i][j+1];
-            }
-            else{
-                arr3[i][j]=1;
-            }
-        }
-    }
-    vector<vector<int>>arr4(n,vector<int>(n,1));
-    for(int i=n-2;i>=0;i--){
-        for(int j=0;j<n;j++){
-            if(v[i][j]==v[i+1][j]){
-                arr4[i][j]=1+arr4[i+1][j];
-            }
-            else{
-                arr4[i][j]=1;
-            }
-        }
-    }
-    int ans=0;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(v[i][j]=='.'){
-                continue;
-            }
-            ans=max(ans,min(min(arr1[i][j],arr2[i][j]),min(arr3[i][j],arr4[i][j])));
-        }
-    }
-    cout<<ans<<endl;
+    
 }  
 int main(){     
     int t=1;
-    cin>>t;
+    // cin>>t;
     for(int j=0;j<t;j++)
     {
         solve();
     }
-
+    
 }
