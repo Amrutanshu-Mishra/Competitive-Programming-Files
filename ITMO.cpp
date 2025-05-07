@@ -74,51 +74,43 @@ void seive(){
     
 }
 void solve(){
-    int n,q,c;
-    cin>>n>>q>>c;
-    vector<vector<vector<int>>>v(c+1,vector<vector<int>>(101,vector<int>(101,0)));
+    ll n,l,r;
+    cin>>n>>l>>r;
+    vll arr(n);
     loop(0,n){
-        int x,y,s;
-        cin>>x>>y>>s;
-        v[s][x][y]++;
+        cin>>arr[i];
     }
-    for(int k=0;k<=c;k++){
-        for(int i=0;i<101;i++){
-            for(int j=1;j<101;j++){
-                v[k][i][j]+=v[k][i][j-1];
-            }
+    set<ll>st;
+    loop(0,n){
+        st.insert(arr[i]);
+    }
+    if(st.size()<n){
+        if(l>0){
+            cout<<"NO"<<endl;
+            return;
         }
-        
+        cout<<"YES"<<endl;
+        return;
     }
-    for(int k=0;k<=c;k++){
-        for(int j=0;j<101;j++){
-            for(int i=1;i<101;i++){
-                v[k][i][j]+=v[k][i-1][j];
-            }
+    if(n>32){
+        cout<<"NO"<<endl;
+        return;
+    }
+    ll ans=0;
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            ans+=(arr[i]^arr[j]);
         }
     }
-    while (q--)
-    {
-        ll t,x1,y1,x2,y2;
-        cin>>t>>x1>>y1>>x2>>y2;
-        ll ans=0;
-        for(int k=0;k<=c;k++){
-            ll tmp1=0;
-            ll tmp2=0;
-            ll tmp3=0;
-            tmp1=v[k][x1-1][y2];
-            tmp2=v[k][x2][y1-1];
-            tmp3=v[k][x1-1][y1-1];
-            ll tmp4=v[k][x2][y2]-tmp1-tmp2+tmp3;
-            ans+=tmp4*((t+k)%(c+1));
-        }
-        cout<<ans<<endl;
+    if(ans>=l && ans<=r){
+        cout<<"YES"<<endl;
+        return;
     }
-    
+    cout<<"NO"<<endl;
 }  
 int main(){     
     int t=1;
-    // cin>>t;
+    cin>>t;
     for(int j=0;j<t;j++)
     {
         solve();
