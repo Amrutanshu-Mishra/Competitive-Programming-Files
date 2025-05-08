@@ -73,40 +73,132 @@ void seive(){
     }
     
 }
-void solve(){
-    ll n,l,r;
-    cin>>n>>l>>r;
-    vll arr(n);
+bool checker(vector<pair<ll,ll>>&coord,ll tc,int n){
+    vector<vector<int>>adj(n);
     loop(0,n){
-        cin>>arr[i];
-    }
-    set<ll>st;
-    loop(0,n){
-        st.insert(arr[i]);
-    }
-    if(st.size()<n){
-        if(l>0){
-            cout<<"NO"<<endl;
-            return;
-        }
-        cout<<"YES"<<endl;
-        return;
-    }
-    if(n>32){
-        cout<<"NO"<<endl;
-        return;
-    }
-    ll ans=0;
-    for(int i=0;i<n;i++){
         for(int j=i+1;j<n;j++){
-            ans+=(arr[i]^arr[j]);
+            if(coord[i].first==coord[j].first && coord[i].second==coord[j].second){
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+            }
+            else if(coord[i].first==coord[j].first){
+                if(tc>=(abs(coord[i].second-coord[j].second))/2+(abs(coord[i].second-coord[j].second))%2){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+            else if(coord[i].second==coord[j].second){
+                if(tc>=(abs(coord[i].first-coord[j].first))/2+(abs(coord[i].first-coord[j].first))%2){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+            else{
+                ll t1=max(abs(coord[i].first-coord[j].first),abs(coord[i].second-coord[j].second));
+                if(tc>=t1){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
         }
     }
-    if(ans>=l && ans<=r){
-        cout<<"YES"<<endl;
+    vector<bool>vis(n,false);
+    queue<int>q;
+    int count=0;
+    for(int i=0;i<n;i++){
+        if(!vis[i]){
+            count++;
+            q.push(i);
+            while (!q.empty())
+            {
+                int node=q.front();
+                q.pop();
+                vis[node]=true;
+                for(auto j:adj[node]){
+                    if(!vis[j]){
+                        q.push(j);
+                        vis[j]=true;
+                    }
+                }
+            }
+            
+        }
+    }
+    if(count==1){
+        return true;
+    }
+    return false;
+}
+void solve(){
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    vector<int>ans;
+    string base="LIT";
+    if(count(s.begin(),s.end(),s[0])==n){
+        cout<<-1<<endl;
         return;
     }
-    cout<<"NO"<<endl;
+    while (true)
+    {
+    
+        vector<pair<int,char>>cnt;
+        for(auto i:base){
+            cnt.push_back({count(s.begin(),s.end(),i),i});
+        }
+        sort(cnt.begin(),cnt.end());
+        if(cnt[0].first==cnt[1].first && cnt[1].first==cnt[2].first){
+            break;
+        }
+        //first time writing a lambda function
+        auto op =[&] (int i)->void{
+            string z=base;
+            z.erase(find(z.begin(),z.end(),s[i]));
+            z.erase(find(z.begin(),z.end(),s[i+1]));
+            ans.push_back(i);
+            s=s.substr(0,i+1)+z[0]+s.substr(i+1);
+        };
+
+        bool done=false;
+        for(int i=0;i<s.size()-1;i++){
+            if(s[i]==s[i+1]){
+                continue;
+            }
+            if(s[i]!=cnt[0].second && s[i+1]!=cnt[0].second){
+                op(i);
+                done=true;
+                break;
+            }
+        }
+        if(done) {
+            continue;
+        }   
+        for(int i=0;i<s.size()-1;i++){
+            if(s[i]==s[i+1]){
+                continue;
+            }
+            //now trying for substrings ca or ac
+            if(s[i]==cnt[2].second){
+                op(i);
+                op(i+1);
+                op(i);
+                op(i+2);
+                break;
+            }
+            else if(s[i+1]==cnt[2].second){
+                op(i);
+                op(i);
+                op(i+1);
+                op(i+3);
+                break;
+            }
+        }
+    }
+    cout<<ans.size()<<endl;
+    for(auto i:ans){
+        cout<<i+1<<endl;
+    }
 }  
 int main(){     
     int t=1;
