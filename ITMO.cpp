@@ -132,73 +132,37 @@ bool checker(vector<pair<ll,ll>>&coord,ll tc,int n){
 void solve(){
     int n;
     cin>>n;
-    string s;
-    cin>>s;
+    vi arr(n+1);
+    loop(1,n+1){
+        cin>>arr[i];
+    }
+    set<int>st;
     vector<int>ans;
-    string base="LIT";
-    if(count(s.begin(),s.end(),s[0])==n){
-        cout<<-1<<endl;
-        return;
-    }
-    while (true)
+    int tmp=n;
+    while (tmp--)
     {
-    
-        vector<pair<int,char>>cnt;
-        for(auto i:base){
-            cnt.push_back({count(s.begin(),s.end(),i),i});
+        int d;
+        cin>>d;
+        int count=0;
+        while(st.find(d)==st.end()){
+            count++;
+            st.insert(d);
+            d=arr[d];
         }
-        sort(cnt.begin(),cnt.end());
-        if(cnt[0].first==cnt[1].first && cnt[1].first==cnt[2].first){
-            break;
-        }
-        //first time writing a lambda function
-        auto op =[&] (int i)->void{
-            string z=base;
-            z.erase(find(z.begin(),z.end(),s[i]));
-            z.erase(find(z.begin(),z.end(),s[i+1]));
-            ans.push_back(i);
-            s=s.substr(0,i+1)+z[0]+s.substr(i+1);
-        };
-
-        bool done=false;
-        for(int i=0;i<s.size()-1;i++){
-            if(s[i]==s[i+1]){
-                continue;
-            }
-            if(s[i]!=cnt[0].second && s[i+1]!=cnt[0].second){
-                op(i);
-                done=true;
-                break;
-            }
-        }
-        if(done) {
-            continue;
-        }   
-        for(int i=0;i<s.size()-1;i++){
-            if(s[i]==s[i+1]){
-                continue;
-            }
-            //now trying for substrings ca or ac
-            if(s[i]==cnt[2].second){
-                op(i);
-                op(i+1);
-                op(i);
-                op(i+2);
-                break;
-            }
-            else if(s[i+1]==cnt[2].second){
-                op(i);
-                op(i);
-                op(i+1);
-                op(i+3);
-                break;
-            }
-        }
+        // cout<<d<<" "<<count<<" "<<arr[d]<<endl;
+        ans.push_back(count);
     }
-    cout<<ans.size()<<endl;
-    for(auto i:ans){
-        cout<<i+1<<endl;
+    // loop(0,n){
+    //     cout<<ans[i]<<" ";
+    // }
+    // cout<<endl;
+    for(int i=1;i<n;i++){
+        ans[i]+=ans[i-1];
     }
+    loop(0,n){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
 }  
 int main(){     
     int t=1;
