@@ -73,103 +73,79 @@ void seive(){
     }
     
 }
-bool checker(vector<pair<ll,ll>>&coord,ll tc,int n){
-    vector<vector<int>>adj(n);
-    loop(0,n){
-        for(int j=i+1;j<n;j++){
-            if(coord[i].first==coord[j].first && coord[i].second==coord[j].second){
-                adj[i].push_back(j);
-                adj[j].push_back(i);
-            }
-            else if(coord[i].first==coord[j].first){
-                if(tc>=(abs(coord[i].second-coord[j].second))/2+(abs(coord[i].second-coord[j].second))%2){
-                    adj[i].push_back(j);
-                    adj[j].push_back(i);
-                }
-            }
-            else if(coord[i].second==coord[j].second){
-                if(tc>=(abs(coord[i].first-coord[j].first))/2+(abs(coord[i].first-coord[j].first))%2){
-                    adj[i].push_back(j);
-                    adj[j].push_back(i);
-                }
-            }
-            else{
-                ll t1=max(abs(coord[i].first-coord[j].first),abs(coord[i].second-coord[j].second));
-                if(tc>=t1){
-                    adj[i].push_back(j);
-                    adj[j].push_back(i);
-                }
+
+bool helper(vector<vector<int>>&adj,vll &a,int node,ll mid){
+    if(adj[node].size()==0){
+        if(a[node]>=mid){
+            return true;
+        }
+        return false;
+    }
+    if(mid>=1e17){
+        return false;
+    }
+    if(a[node]>=mid){
+        for(auto adjNode:adj[node]){
+            bool tmp=helper(adj,a,adjNode,mid);
+            if(!tmp){
+                return false;
             }
         }
-    }
-    vector<bool>vis(n,false);
-    queue<int>q;
-    int count=0;
-    for(int i=0;i<n;i++){
-        if(!vis[i]){
-            count++;
-            q.push(i);
-            while (!q.empty())
-            {
-                int node=q.front();
-                q.pop();
-                vis[node]=true;
-                for(auto j:adj[node]){
-                    if(!vis[j]){
-                        q.push(j);
-                        vis[j]=true;
-                    }
-                }
-            }
-            
-        }
-    }
-    if(count==1){
         return true;
     }
-    return false;
+    for(auto adjNode:adj[node]){
+
+        bool tmp=helper(adj,a,adjNode,mid+(mid-a[node]));
+        if(!tmp){
+            return false;
+        }
+    }
+    return true;
+}
+bool checker(vector<vector<int>>&adj,vll &a,ll mid){
+    if(a[1]>=mid){
+        return true;
+    }
+    for(auto adjNode:adj[1]){
+        bool tmp=helper(adj,a,adjNode,mid-a[1]);
+        if(!tmp){
+            return false;
+        }
+    }
+    return true;
 }
 void solve(){
-    int n;
-    cin>>n;
-    vi arr(n+1);
-    loop(1,n+1){
-        cin>>arr[i];
-    }
-    set<int>st;
-    vector<int>ans;
-    int tmp=n;
-    while (tmp--)
-    {
-        int d;
-        cin>>d;
-        int count=0;
-        while(st.find(d)==st.end()){
-            count++;
-            st.insert(d);
-            d=arr[d];
+    ll n,m;
+    cin>>n>>m;
+    ll s=0;
+    ll e=n;
+    ll maxi=n;
+    while(s<=e){
+        ll mid=(s+e)/2;
+        if(mid*(mid-1)/2>=m){
+            maxi=min(maxi,mid);
+            e=mid-1;
         }
-        // cout<<d<<" "<<count<<" "<<arr[d]<<endl;
-        ans.push_back(count);
+        else{
+            s=mid+1;
+        }
     }
-    // loop(0,n){
-    //     cout<<ans[i]<<" ";
-    // }
-    // cout<<endl;
-    for(int i=1;i<n;i++){
-        ans[i]+=ans[i-1];
+    // cout<<maxi<<endl;
+    maxi=n-maxi;
+    if((n/2+n%2)<=m){
+        cout<<0<<" "<<maxi<<endl;
+        return;
     }
-    loop(0,n){
-        cout<<ans[i]<<" ";
-    }
-    cout<<endl;
+    ll mini=n-2*m;
+    cout<<mini<<" "<<maxi<<"\n";
 }  
 int main(){     
     int t=1;
-    cin>>t;
+    // cin>>t;
     for(int j=0;j<t;j++)
     {
         solve();
     }
     
 }
+
