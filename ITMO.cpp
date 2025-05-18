@@ -122,143 +122,27 @@ bool checker(vll &arr,ll n,ll mid,ll x,ll y){
     }
     return dp[y];
 }
-bool helper(int n,vi arr){
-    int tmp=arr[0];
-    sort(arr.begin(),arr.end());
-    int idx=lower_bound(arr.begin(),arr.end(),tmp)-arr.begin();
-    int count=0;
-    // cout<<idx<<" ";
-    if(n%2){
-        if(idx==(n/2)){
-            return true;
-
-        }
-        int l=idx;
-        int r=n-idx-1;
-        if(l<r){
-            int req=n/2-l;
-            
-            if(arr[idx]>=0){
-                for(int i=idx+1;i<n;i++){
-                    if(arr[i]>0){
-                        count++;
-                    }
-                }
-            }
-            else{
-                for(int i=idx+1;i<n;i++){
-                    if(arr[i]>abs(arr[idx])){
-                        count++;
-                    }
-                }
-            }
-            if(count>=req){
-                return true;
-            }  
-        }
-        else{
-            int req=n/2-r;
-            
-            if(arr[idx]>=0){
-                for(int i=0;i<idx;i++){
-                    if(abs(arr[i])>arr[idx]){
-                        count++;
-                    }
-                }
-                
-            }
-            else{
-                for(int i=0;i<idx;i++){
-                    if(arr[i]<0){
-                        count++;
-                    }
-                }
-            }
-            if(count>=req){
-                return true;
-            }  
-        }
+ll helper(ll n,ll m,ll a,ll b){
+    if(n==1 && m==1){
+        return 0;
     }
-    else{
-        if(idx==n/2-1){
-            return true;
-
-        }
-        int l=idx;
-        int r=n-idx-1;
-        if(r>n/2){
-            int req=n/2-l-1;
-            
-            if(arr[idx]>=0){
-                for(int i=idx+1;i<n;i++){
-                    if(arr[i]>0){
-                        count++;
-                    }
-                }
-            }
-            else{
-                for(int i=idx+1;i<n;i++){
-                    if(arr[i]>abs(arr[idx])){
-                        count++;
-                    }
-                }
-            }
-            if(count>=req){
-                return true;
-
-            }  
-        }
-        else{
-            int req=n/2-r;
-            
-            if(arr[idx]>=0){
-                for(int i=0;i<idx;i++){
-                    if(abs(arr[i])>arr[idx]){
-                        count++;
-                    }
-                }
-                
-            }
-            else{
-                for(int i=0;i<idx;i++){
-                    if(arr[i]<0){
-                        count++;
-                    }
-                }
-            }
-            if(count>=req){
-                return true;
-
-            }  
-        }
+    ll n1=n-max(a-1,n-a);
+    ll m1=m-max(b-1,m-b);
+    ll tmp1=INT_MAX;
+    ll tmp2=INT_MAX;
+    if(n!=1){
+        tmp1=helper(n1,m,n1/2+n1%2,m/2+m%2);
     }
-    // cout<<count<<endl;
-    return false;
+    if(m!=1){
+        tmp2=helper(n,m1,n/2+n%2,m1/2+m1%2);
+    }
+    return 1+min(tmp1,tmp2);
 }
 void solve(){
-    int n;
-    cin>>n;
-    vvi arr(n,vi(n,0));
-    int tmp=n*n-1;
-    int row_max=n-1;
-    int row_min=0;
-    int col_min=0;
-    int col_max=n-1;
-    while(row_min<=row_max && col_min<=col_max){
-        arr[row_min][col_min]=tmp;
-        tmp--;
-        arr[row_min][col_max]=tmp;
-        tmp--;
-        arr[row_max][col_min]=tmp;
-        tmp--;
-        arr[row_min][col_min]=tmp;
-        tmp--;
-        int a=col_min+1;
-        int b=col_max-1;
-        int c=row_min+1;
-        int d=row_max-1;
-
-    }
+    ll n,m,a,b;
+    cin>>n>>m>>a>>b;
+    ll count=helper(n,m,a,b);
+    cout<<count<<endl;
 }  
 int main(){     
     int t=1;
