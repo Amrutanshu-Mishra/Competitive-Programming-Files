@@ -32,7 +32,7 @@ void update_bit(int &n,int pos,int value){
     n=n&mark;
     n=n|(value<<pos);
 }
-ll gcd(ll a,ll b){
+long long gcd(long long a,long long b){
     if(a==0){
         return b;
     }
@@ -138,12 +138,32 @@ ll helper(ll n,ll m,ll a,ll b){
     }
     return 1+min(tmp1,tmp2);
 }
-void solve(){
-    ll n,m,a,b;
-    cin>>n>>m>>a>>b;
-    ll count=helper(n,m,a,b);
-    cout<<count<<endl;
-}  
+void solve() {
+    int n, m, a, b;
+    cin >> n >> m >> a >> b;
+
+    vector<pair<int, int>> rec({
+    make_pair(a, m), make_pair(n - a + 1, m),
+    make_pair(n, b), make_pair(n, m - b + 1)});
+
+    int ans = n + m;
+    for (auto i : rec) {
+        int n1=i.first;
+        int m1=i.second;
+        int res = 0;
+        while (n1 > 1) {
+            ++res;
+            n1 = (n1 + 1) / 2;
+        }
+        while (m1 > 1) {
+            ++res;
+            m1 = (m1 + 1) / 2;
+        }
+        ans = min(ans, res);
+    }
+
+    cout << 1 + ans << "\n";
+}
 int main(){     
     int t=1;
     cin>>t;
