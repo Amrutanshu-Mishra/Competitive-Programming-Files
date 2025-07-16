@@ -59,60 +59,80 @@ bool checker(vll &arr,int n,ll mid,ll m){
     }
     
 }
+
+vector<vll> gc;
+
 void solve(){
-    int n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    vector<vll>arr(n,vll(m));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin>>arr[i][j];
+    int n;
+    cin>>n;
+    vi arr(n);
+    loop(0,n){
+        cin>>arr[i];
+    }
+
+    //first thing to observe is that the value(say x) which will be the value at all the index of the arr
+    //at the end will always be equal to the the gcd of the elements in the array(we will refer to this value as g1)
+    //so if the arr alrady contains g1 then we just count its frequency and our answer is n-cnt
+    int g1=arr[0];
+    loop(1,n){
+        g1=gcd(g1,arr[i]);
+    }
+    int cnt=0;
+    loop(0,n){
+        if(arr[i]==g1){
+            cnt++;
         }
     }
-    int i=0;
-    int j=0;
-    for (int k = 0; k < s.size(); k++)
+    if(cnt){
+        cout<<n-cnt<<endl;
+        return;
+    }
+
+
+    //but if the arr doesnt contain value of g1 thats when things get tricky
+    //we use dp where mi[i] = minimum number of operations required to have at least one i in the arr
+    //now we use multi source bfs
+    //initially dp[arr[i]] = 0 for all i from 0 to n-1
+
+    vi mi(5001,INT_MAX);
+    queue<int>q;
+    loop(0,n){
+        mi[arr[i]]=0;
+        q.push(arr[i]);
+    }
+
+    //then for every value in this queue we get its gcd with every other element in the arr
+    //then dp[gcd(current_value,arr[i])]=1+dp[current_value]
+    while (q.size())
     {
-        if(s[k]=='D'){
-            ll sum=0;
-            for (int l = 0; l < m; l++)
-            {
-                sum+=arr[i][l];
+        int val = q.front();
+        q.pop();
+
+        for(auto x:arr){
+            if(mi[gc[x][val]]==INT_MAX){
+                mi[gc[x][val]] = 1 + mi[val];
+                q.push(gc[x][val]);
             }
-            arr[i][j]=-1*sum;
-            i++;
         }
-        else{
-            ll sum=0;
-            for (int l = 0; l < n; l++)
-            {
-                sum+=arr[l][j];
-            }
-            arr[i][j]=-1*sum;
-            j++;
-        }
-    }
-    ll sum=0;
-    for (int l = 0; l < n; l++)
-    {
-        sum+=arr[l][j];
-    }
-    arr[i][j]=-1*sum;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cout<<arr[i][j]<<" ";
-        }
-        cout<<endl;
     }
     
+
+    //finally answer
+    cout<< n + mi[g1] - 1<<endl;
 }    
 
 int main(){ 
+
+    //since n and ai are 5000 only we can preprocess all the possible gcds that we need 
+    gc = vector<vll>(5001,vll(5001));
+    for(int i=0;i<5001;i++){
+        gc[i][0]=gc[0][i]=gc[i][i]=i;
+    }
+    for(int x=1;x<=5000;x++){
+        for(int y=1;y<x;y++){
+            gc[x][y] = gc[y][x] = gc[y][x%y];
+        }
+    }
     int t;
     t=1;
     cin>>t;

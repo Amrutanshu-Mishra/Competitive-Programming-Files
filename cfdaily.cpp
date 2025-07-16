@@ -12,7 +12,7 @@ typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef pair<int, int> ii;
 typedef vector<ll> vll;
-const int M = 1e9 + 7;
+const int M = 1000000007;
 ll binexp(ll a, ll b, ll m)
 {
     ll result = 1;
@@ -26,6 +26,10 @@ ll binexp(ll a, ll b, ll m)
         b >>= 1;
     }
     return result;
+}
+ll modexp(ll a)
+{
+    return binexp(a, M - 2, M);
 }
 
 void helper(string curr, int n, vector<string> &v)
@@ -55,7 +59,6 @@ ll clear_bit(ll n, int pos)
     return n;
 }
 
-
 vector<pair<pair<ll, ll>, pair<ll, ll>>> v;
 ll dfs(vvi &adj, int n, int i, vector<bool> &vis)
 {
@@ -78,37 +81,59 @@ ll dfs(vvi &adj, int n, int i, vector<bool> &vis)
     return ans + tmp;
 }
 
-bool checker(ll mid,ll n,ll m,ll k){
-    ll s1=0;
-    ll e1=m;
-    ll a1=0;
-    
-    while(s1<=e1){
-        ll x=(s1+e1)/2;
-        if((x-1)*(mid+1)+mid<=m){
-            a1=max(a1,x);
-            s1=x+1;
+bool checker(ll mid, ll n, ll m, ll k)
+{
+    ll s1 = 0;
+    ll e1 = m;
+    ll a1 = 0;
+
+    while (s1 <= e1)
+    {
+        ll x = (s1 + e1) / 2;
+        if ((x - 1) * (mid + 1) + mid <= m)
+        {
+            a1 = max(a1, x);
+            s1 = x + 1;
         }
-        else{
-            e1=x-1;
+        else
+        {
+            e1 = x - 1;
         }
     }
-    ll tmp=a1*mid;
-    if((m-(a1-1)*(mid+1)-mid)>0){
-        tmp+=m-(a1-1)*(mid+1)-mid-1;
+    ll tmp = a1 * mid;
+    if ((m - (a1 - 1) * (mid + 1) - mid) > 0)
+    {
+        tmp += m - (a1 - 1) * (mid + 1) - mid - 1;
     }
-    return (tmp*n>=k);
+    return (tmp * n >= k);
 }
+
+vll fac;
+
 void solve()
 {
-    
+    ll n, r;
+    cin >> n >> r;
+    // cout<<fac[100000]<<endl;
+    ll num = fac[n - 1]%M;
+    ll denom1 = fac[n - r]%M;
+    ll denom2 = fac[r - 1]%M;
+    ll dnum1 = modexp(denom1)%M;
+    ll ans = ((num%M) * (dnum1%M)) % M;
+    ll dnum2 = modexp(denom2)%M;
+    ans = ((ans%M) * (dnum2%M)) % M;
+    cout << ans << endl;
 }
 
 int main()
 {
-    
+    fac = vll(1e5 + 1, 1);
+    for (int i = 1; i <= 1e5; i++)
+    {
+        fac[i] = ((i%M) * (fac[i - 1]%M)) % M;
+    }
     int t;
-    t = 1;
+    // t = 1;
     cin >> t;
     while (t--)
     {

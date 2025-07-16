@@ -1,176 +1,228 @@
+// #include<bits/stdc++.h>
+// using namespace std;
+
+// typedef long long lli;
+// typedef unsigned long long ull;
+// typedef long double lld;
+// #define MOD 1000000007
+// #define INF 1e18
+// #define PI 3.141592653589793238462
+// #define LLI_MAX LLONG_MAX
+// #define LLI_MIN LLONG_MIN
+// #define vi vector<lli>
+// #define vvi vector<vector<lli>>
+// #define vp vector<pair<lli, lli>>
+// #define pb push_back
+// #define endl "\n"
+// #define sz(x) ((lli)(x).size())
+// #define all(x) (x).begin(), (x).end()
+// #define set_bits __builtin_popcountll
+// #define precision(x) fixed<<setprecision(x)
+// #define f(i, n) for(lli i=0; i<n; i++)
+// #define r(i, n) for(lli i=n-1; i>=0; i--)
+// #define iv(a, n) for(lli i=0; i<n; i++) cin>>a[i]
+// #define fastio() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
+// template <class T> using maxHeap = priority_queue<T>;
+// template <class T> using minHeap = priority_queue<T, vector<T>, greater<T>>;
+
+// #ifdef ONLINE_JUDGE
+//     #define debug(x)
+// #else
+//     #define debug(x) cerr<<#x<<" -> "; _print(x); cerr<<endl;
+// #endif
+
+// template<class T> void _print(vector<T> v){
+//     cerr<<"{";
+//     for(T i: v){
+//         cerr<<i<<", ";
+//     }
+//     cerr<<"}";
+// }
+// template<class T> void _print(T x) { cerr<<x; }
+
+
+
+// void solve(){
+//     lli n;
+//     cin>>n;
+
+//     lli minx=LLI_MAX, miny=LLI_MAX, maxx=LLI_MIN, maxy=LLI_MIN;
+
+//     vp v(n);
+//     map<lli, lli> row;
+//     map<lli, lli> col;
+//     f(i, n){
+//         cin>>v[i].first>>v[i].second;
+//         row[v[i].first]++;
+//         col[v[i].second]++;
+//         minx = min(minx, v[i].first);
+//         miny = min(miny, v[i].second);
+//         maxx = max(maxx, v[i].first);
+//         maxy = max(maxy, v[i].second);
+//     } 
+//     lli area = (maxx-minx+1)*(maxy-miny+1);
+
+//     if(area==n){
+//         cout<<area<<endl;
+//         return;
+//     }
+//     lli ans = area;
+//     for(lli i=0; i<n; i++){
+//         lli x = v[i].first, y = v[i].second;
+//         if(x!=minx && x!=maxx && y!=miny && y!=maxy) continue;
+//         else{
+//             if(row[x]==1 || col[y]==1){
+//                 // cout<<x<<" "<<y<<endl;
+//                 lli min1x=LLI_MAX, min1y=LLI_MAX, max1x=LLI_MIN, max1y=LLI_MIN;
+//                 f(j, n){
+//                     if(j==i) continue;
+//                     min1x = min(min1x, v[j].first);
+//                     min1y = min(min1y, v[j].second);
+//                     max1x = max(max1x, v[j].first);
+//                     max1y = max(max1y, v[j].second);
+//                 } 
+//                 lli a = (max1x-min1x+1)*(max1y-min1y+1);
+//                 if(a==n-1){
+//                     a = min(a+(max1x-min1x+1), a+(max1y-min1y+1));
+//                 }
+//                 ans = min(ans, a);
+//             }
+//         }
+//     }
+//     cout<<ans<<endl;
+
+// }
+
+
+
+// int main(){
+// #ifndef ONLINE_JUDGE
+//     freopen("Error.txt", "w", stderr);
+//     clock_t T = clock();
+// #endif
+//     fastio();
+    
+//     lli t;
+//     cin>>t;
+
+//     while(t--){
+//         solve();
+//     }
+
+// #ifndef ONLINE_JUDGE
+//     cerr<<"\nTime taken: "<<((float)(clock()-T))/CLOCKS_PER_SEC<<"seconds";
+// #endif
+//     return 0;
+// }
+
+
 #include<bits/stdc++.h>
 using namespace std;
-#define mp make_pair
-#define fi first
-#define se second
-#define ll long long
-#define ull unsigned long long
-#define ui unsigned int
-#define us unsigned short
-#define loop(j,n) for(int i = j; i < n;i++)
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int,int> ii;
-typedef vector<ll> vll;
 
-const int M=998244353;
-int get_bit(ll n,ll pos){
-    return (n&(1LL<<pos))!=0;
-}
-ll set_bit(ll n,int pos){
-    n=n|(1<<pos);
-    return n;
-}
-ll clear_bit(ll n,int pos){
-    int ele=1<<pos;
-    ele=~ele;
-    n=n&ele;
-    return n;
-}
-void update_bit(int &n,int pos,int value){
-    int mark=~(1<<pos);
-    n=n&mark;
-    n=n|(value<<pos);
-}
-long long gcd(long long a,long long b){
-    if(a==0){
-        return b;
+typedef long long lli;
+typedef unsigned long long ull;
+typedef long double lld;
+#define MOD 1000000007
+#define INF 1e18
+#define PI 3.141592653589793238462
+#define LLI_MAX LLONG_MAX
+#define LLI_MIN LLONG_MIN
+#define vi vector<lli>
+#define vvi vector<vector<lli>>
+#define vp vector<pair<lli, lli>>
+#define pb push_back
+#define endl "\n"
+#define sz(x) ((lli)(x).size())
+#define all(x) (x).begin(), (x).end()
+#define set_bits __builtin_popcountll
+#define precision(x) fixed<<setprecision(x)
+#define f(i, n) for(lli i=0; i<n; i++)
+#define r(i, n) for(lli i=n-1; i>=0; i--)
+#define iv(a, n) for(lli i=0; i<n; i++) cin>>a[i]
+#define fastio() ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
+template <class T> using maxHeap = priority_queue<T>;
+template <class T> using minHeap = priority_queue<T, vector<T>, greater<T>>;
+
+#ifdef ONLINE_JUDGE
+    #define debug(x)
+#else
+    #define debug(x) cerr<<#x<<" -> "; _print(x); cerr<<endl;
+#endif
+
+template<class T> void _print(vector<T> v){
+    cerr<<"{";
+    for(T i: v){
+        cerr<<i<<", ";
     }
-    if(b==0){
-        return a;
+    cerr<<"}";
+}
+template<class T> void _print(T x) { cerr<<x; }
+
+x1,y1
+x2,y2
+
+
+xn,yn
+xmax-min+1 * ymax-ymin+1
+1111
+void solve(){
+    lli n;
+    cin>>n;
+    vector<lli> x(n), y(n);
+    vp points(n);
+    f(i, n) {
+        cin >> x[i] >> y[i];
+        points[i] = {x[i], y[i]};
     }
-    return gcd(b,a%b);
-}
-ll lcm(ll a,ll b){
-    ll ele=a*b;
-    ll ele1=gcd(a,b);
-    return ele/ele1;
-}
-ll binexp(ll a,ll b,ll m){
-    ll result=1;
-    while(b>0){
-        if(b&1){
-            result=(result*1LL*a)%m;
+
+    auto x_sorted = x, y_sorted = y;
+    sort(all(x_sorted));
+    sort(all(y_sorted));
+
+    lli area = (x_sorted[n-1]-x_sorted[0]+1)*(y_sorted[n-1]-y_sorted[0]+1);
+    if(area==n){
+        cout<<area<<endl;
+        return;
+    }
+    lli ans = area;
+    f(i, n){
+        lli xi=points[i].first, yi=points[i].second;
+
+        bool f = (xi==x_sorted[0] || xi==x_sorted[n-1] || yi==y_sorted[0] || yi==y_sorted[n-1]);
+        if(!f) continue;
+
+        lli minx = (xi==x_sorted[0])? x_sorted[1]:x_sorted[0];
+        lli maxx = (xi==x_sorted[n-1])? x_sorted[n-2]:x_sorted[n-1];
+        lli miny = (yi==y_sorted[0])? y_sorted[1]:y_sorted[0];
+        lli maxy = (yi==y_sorted[n-1])? y_sorted[n-2]:y_sorted[n-1];
+        lli a = (maxx-minx+1)*(maxy-miny+1);
+        if(a==n-1){
+            a = min(a+(maxx-minx+1), a+(maxy-miny+1));
         }
-        a=(a*1LL*a)%m;
-        b>>=1;
+        ans = min(ans, a);
     }
-    return result;
+
+    cout<<ans<<endl;
 }
-ll modexp(ll a){
-    return binexp(a,M-2,M);
-}
-vector<ll>seive_arr(1e7+7,1);
-void seive(){
-    for (int i = 2; i*i <= 1e7; i++)
-    {
-        if(seive_arr[i]==1){
-            for (int j = i*i; j <= 1e7; j+=i)
-            {
-                seive_arr[j]=i;
-            }
-        }
-    }
+
+
+
+int main(){
+#ifndef ONLINE_JUDGE
+    freopen("Error.txt", "w", stderr);
+    clock_t T = clock();
+#endif
+    fastio();
     
-}
-
-bool helper(vector<vector<int>>&adj,vll &a,int node,ll mid){
-    if(adj[node].size()==0){
-        if(a[node]>=mid){
-            return true;
-        }
-        return false;
-    }
-    if(mid>=1e17){
-        return false;
-    }
-    if(a[node]>=mid){
-        for(auto adjNode:adj[node]){
-            bool tmp=helper(adj,a,adjNode,mid);
-            if(!tmp){
-                return false;
-            }
-        }
-        return true;
-    }
-    for(auto adjNode:adj[node]){
-
-        bool tmp=helper(adj,a,adjNode,mid+(mid-a[node]));
-        if(!tmp){
-            return false;
-        }
-    }
-    return true;
-}
-bool checker(vll &arr,ll n,ll mid,ll x,ll y){
-    vector<int>v1;
-    for(int i=0;i<=mid;i++){
-        v1.push_back(arr[i]);
-    }
-    sort(v1.rbegin(),v1.rend());
-    vector<bool>dp(x+1,false);
-    dp[x]=true;
-    for(auto i:v1){
-        for(int j=0;j<=x;j++){
-            if(dp[j]){
-                dp[j%i]=true;
-            }
-        }
-        if(dp[y]){
-            return true;
-        }
-    }
-    return dp[y];
-}
-ll helper(ll n,ll m,ll a,ll b){
-    if(n==1 && m==1){
-        return 0;
-    }
-    ll n1=n-max(a-1,n-a);
-    ll m1=m-max(b-1,m-b);
-    ll tmp1=INT_MAX;
-    ll tmp2=INT_MAX;
-    if(n!=1){
-        tmp1=helper(n1,m,n1/2+n1%2,m/2+m%2);
-    }
-    if(m!=1){
-        tmp2=helper(n,m1,n/2+n%2,m1/2+m1%2);
-    }
-    return 1+min(tmp1,tmp2);
-}
-void solve() {
-    int n, m, a, b;
-    cin >> n >> m >> a >> b;
-
-    vector<pair<int, int>> rec({
-    make_pair(a, m), make_pair(n - a + 1, m),
-    make_pair(n, b), make_pair(n, m - b + 1)});
-
-    int ans = n + m;
-    for (auto i : rec) {
-        int n1=i.first;
-        int m1=i.second;
-        int res = 0;
-        while (n1 > 1) {
-            ++res;
-            n1 = (n1 + 1) / 2;
-        }
-        while (m1 > 1) {
-            ++res;
-            m1 = (m1 + 1) / 2;
-        }
-        ans = min(ans, res);
-    }
-
-    cout << 1 + ans << "\n";
-}
-int main(){     
-    int t=1;
+    lli t;
     cin>>t;
-    for(int j=0;j<t;j++)
-    {
+
+    while(t--){
         solve();
     }
-    
-}
 
+#ifndef ONLINE_JUDGE
+    cerr<<"\nTime taken: "<<((float)(clock()-T))/CLOCKS_PER_SEC<<"seconds";
+#endif
+    return 0;
+}
