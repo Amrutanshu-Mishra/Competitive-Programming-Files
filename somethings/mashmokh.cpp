@@ -76,68 +76,34 @@ void solve()
 {
     int n;
     cin >> n;
-    vll arr(2 * n);
-    map<ll,bool>vis;
-    loop(0, 2 * n)
+    vll arr(n);
+    loop(0, n)
     {
         cin >> arr[i];
-        vis[arr[i]]=true;
     }
-    sort(arr.begin(),arr.end());
-    int idx = -1;
-    ll num = -1;
-    vll dp1(2 * n, 0);
-    vll dp2(2 * n, 0);
-    dp1[0] = arr[0];
-    dp1[1] = arr[1];
-    loop(2, 2 * n)
-    {
-        dp1[i] = arr[i] + dp1[i - 2];
-    }
-
-    dp2[2*n-1]=arr[2*n-1];
-    dp2[2*n-2]=arr[2*n-2];
-    for (int i = 2*n-3; i >= 0; i--)
-    {
-        dp2[i]=arr[i]+dp2[i+2];
-    }
-    
-    loop(0,2*n){
-        ll a=0;
-        ll b=0;
-        if(i-1>=0){
-            a=dp1[i-1];
-        }
-        if(i+1<2*n){
-            b+=dp2[i+1];
-        }
-        b+=dp1[i];
-        if(i+2<2*n){
-            a+=dp2[i+2];
-        }
-        if(b>a && !vis[b-a]){
-            idx=i;
-            num=b-a;
-            break;
-        }
-    }
-
-    loop(0,n*2){
-        cout<<arr[i]<<" ";
-        if(i==idx){
-            cout<<num<<" ";
-        }
-        
-    }
-    cout<<endl;
 }
 int main()
 {
-    int t;
-    cin >> t;
-    for (int j = 0; j < t; j++)
-    {
-        solve();
+    vll fac(4001,1);
+    loop(1,4000){
+        fac[i] = (i * (fac[i-1]%M))%M;
     }
+    int n, k;
+    cin >> n >> k;
+    int count=0;
+    for(int i=1;i*i<=n;i++){
+        if(n%i==0){
+            count++;
+            if(n/i != i){
+                count++;
+            }
+        }
+    }
+    cout<<count<<endl;
+    ll num = fac[k+count-1];
+    ll denom = ((fac[k]%M) * (fac[count-1]%M))%M ;
+    ll ndenom = modexp(denom);
+    ll ans = ((num%M) * (ndenom%M))%M;
+    cout<<ans<<endl;
     return 0;
 }
