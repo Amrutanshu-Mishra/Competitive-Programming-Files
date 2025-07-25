@@ -3,6 +3,7 @@
           "*.ejs": "html",
           "iostream": "cpp",
           "ostream": "cpp",
-          "string.h": "c"
+          "string.h": "c",
+          "stack": "cpp"
      }
 }
