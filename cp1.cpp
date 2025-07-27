@@ -295,21 +295,57 @@ public:
 
 // Formalizing the Problem
 
+int helper(vi &arr, int i,int pre,map<pair<int,int>,int>&dp){
+    if(i==arr.size()){
+        return 0;
+    }
+    if(dp.find({i,pre})!=dp.end()){
+        return dp[{i,pre}];
+    }
+    int curr=0;
+    if(pre==0 || arr[i]%pre==0){
+        curr=1+helper(arr,i+1,arr[i],dp);
+    }
+    curr=max(curr, helper(arr,i+1,pre,dp));
+    dp[{i,pre}]=curr;
+    return curr;
+}
+
 void solve()
 {
-    
+    int n;
+    cin>>n;
+    unordered_map<int,bool>present;
+    vi arr(n);
+    loop(0,n){
+        cin>>arr[i];
+        present[arr[i]]=true;
+    }
+
+    vector<int>dp(1e6+1,0);
+    int ans=0;
+    for(int i=1;i<=1e6;i++){
+        if(!present[i]){
+            continue;
+        }
+        dp[i]=max(dp[i],1);
+        ans=max(ans,dp[i]);
+        for(int j=i*2;j<=1e6;j+=i){
+            dp[j]=max(dp[j],1+dp[i]);            
+        }
+    }
+
+    cout<<ans<<endl;
 }
 
 int main()
 {
-    // int t;
-    // t = 1;
+    int t;
+    t = 1;
     // cin>>t;
     
-    // for (int j = 0; j < t; j++)
-    // {
-    //     solve();
-    // }
-    ll a=-3.6;
-    cout<<a<<endl;
+    for (int j = 0; j < t; j++)
+    {
+        solve();
+    }
 }
