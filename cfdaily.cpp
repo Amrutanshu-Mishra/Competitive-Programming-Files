@@ -17,41 +17,39 @@ const int M = 1000000007;
 void solve()
 {
     int n;
-    cin >> n;
-
-    int arr[n];
-    int ma=0;
-    
-    for(int i=0; i<n; i++)
-    {
-        cin >> arr[i];
-        ma=max(ma,arr[i]);
+    cin>>n;
+    vll arr(n);
+    loop(0,n){
+        cin>>arr[i];
     }
-    vector<bool> present(ma+1,false);
-    for(int i=0;i<n;i++){        
-        present[arr[i]]=true;
+    vll diff;
+    for(int i=1;i<n;i++){
+        diff.push_back(abs(arr[i]-arr[i-1]));
     }
-
-    vector<int> dp(ma + 1, 0);
-    int ans = 0;
-    for (int i = 1; i <= ma; i++)
-    {
-        if (!present[i])
-        {
-            continue;
-        }
-        dp[i] = max(dp[i], 1);
-        ans = max(ans, dp[i]);
-        for (int j = i * 2; j <= ma; j += i)
-        {
-            if(!present[j]){
-                continue;
-            }
-            dp[j] = max(dp[j], 1 + dp[i]);
+    for(int i=1;i<diff.size();i+=2){
+        diff[i]=-1*diff[i];
+    }
+    long long ans=INT64_MIN;
+    long long curr=0;
+    for(int i=0;i<diff.size();i++){
+        curr+=diff[i];
+        ans=max(ans,curr);
+        if(curr<0){
+            curr=0;
         }
     }
-  
-    cout << ans << endl;
+    for(int i=0;i<diff.size();i++){
+        diff[i]=-1*diff[i];
+    }
+    curr=0;
+    for(int i=0;i<diff.size();i++){
+        curr+=diff[i];
+        ans=max(ans,curr);
+        if(curr<0){
+            curr=0;
+        }
+    }
+    cout<<ans<<endl;
 }
 
 int main()
