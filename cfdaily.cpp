@@ -14,42 +14,58 @@ typedef pair<int, int> ii;
 typedef vector<ll> vll;
 const int M = 1000000007;
 
+string res;
+
+bool check(string &pref,string &suf,int n,vector<string>&v){
+    string s=pref+suf.substr(n-2);
+    multiset<string>vv,sPref,sSuf;
+    for(int i=0; i<n-1; i++){
+        sPref.insert(s.substr(0,n-i-1));
+        vv.insert(s.substr(0,n-i-1));
+        sSuf.insert(s.substr(i+1));
+        vv.insert(s.substr(i+1));
+    }
+
+    if(vv==multiset<string>(v.begin(),v.end())){
+        for(int i=0;i<2*n-2;i++){
+            if(sPref.count(v[i])){
+                res+='P';
+                sPref.erase(sPref.find(v[i]));
+            }
+            else if(sSuf.count(v[i])){
+                res+='S';
+                sSuf.erase(sSuf.find(v[i]));
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
 void solve()
 {
     int n;
     cin>>n;
-    vll arr(n);
-    loop(0,n){
-        cin>>arr[i];
-    }
-    vll diff;
-    for(int i=1;i<n;i++){
-        diff.push_back(abs(arr[i]-arr[i-1]));
-    }
-    for(int i=1;i<diff.size();i+=2){
-        diff[i]=-1*diff[i];
-    }
-    long long ans=INT64_MIN;
-    long long curr=0;
-    for(int i=0;i<diff.size();i++){
-        curr+=diff[i];
-        ans=max(ans,curr);
-        if(curr<0){
-            curr=0;
+    vector<string>v;
+    vector<string>v2;
+    loop(0,2*n-2){
+        string s;
+        cin>>s;
+        if(s.size()==n-1){
+            v2.push_back(s);
         }
+        v.push_back(s);
     }
-    for(int i=0;i<diff.size();i++){
-        diff[i]=-1*diff[i];
+    if(check(v2[0],v2[1],n,v)){
+        cout<<res<<endl;
     }
-    curr=0;
-    for(int i=0;i<diff.size();i++){
-        curr+=diff[i];
-        ans=max(ans,curr);
-        if(curr<0){
-            curr=0;
-        }
+    else{
+        check(v2[1],v2[0],n,v);
+        cout<<res<<endl;
     }
-    cout<<ans<<endl;
 }
 
 int main()
