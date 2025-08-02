@@ -1,351 +1,87 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define mp make_pair
-#define fi first
-#define se second
-#define ll long long
-#define ull unsigned long long
-#define ui unsigned int
-#define us unsigned short
-#define loop(j, n) for (int i = j; i < n; i++)
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int, int> ii;
-typedef vector<ll> vll;
 
-const int M = 1e9 + 7;
-int get_bit(ll n, ll pos)
-{
-    return (n & (1LL << pos)) != 0;
+// Helper to trim leading/trailing spaces
+string trim(string str) {
+    if (str.empty()) return str;
+    size_t first = str.find_first_not_of(' ');
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
 }
-ll set_bit(ll n, int pos)
-{
-    n = n | (1 << pos);
-    return n;
-}
-ll clear_bit(ll n, int pos)
-{
-    int ele = 1 << pos;
-    ele = ~ele;
-    n = n & ele;
-    return n;
-}
-void update_bit(int &n, int pos, int value)
-{
-    int mark = ~(1 << pos);
-    n = n & mark;
-    n = n | (value << pos);
-}
-ll gcd(ll a, ll b)
-{
-    if (a == 0)
-    {
-        return b;
+
+// Helper to split string by space
+vector<string> splitstring(string input_string) {
+    vector<string> splits;
+    string::iterator new_end = unique(input_string.begin(), input_string.end(), [](const char &x, const char &y) {
+        return x == y && x == ' ';
+    });
+    input_string.erase(new_end, input_string.end());
+    while (!input_string.empty() && input_string.back() == ' ') {
+        input_string.pop_back();
     }
-    if (b == 0)
-    {
-        return a;
+    stringstream ss(input_string);
+    string word;
+    while (ss >> word) {
+        splits.push_back(word);
     }
-    return gcd(b, a % b);
+    return splits;
 }
-ll lcm(ll a, ll b)
-{
-    ll ele = a * b;
-    ll ele1 = gcd(a, b);
-    return ele / ele1;
-}
-ll binexp(ll a, ll b, ll m)
-{
-    ll result = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-        {
-            result = (result * 1LL * a) % m;
+
+// Main solving function
+long long solve(int n, int m, const vector<vector<int>>& a) {
+    map<int, vector<pair<int, int>>> buildings_by_type;
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j)
+            buildings_by_type[a[i][j]].emplace_back(i, j);
+
+    long long total_manhattan_distance = 0;
+
+    for (const auto& [type, coords] : buildings_by_type) {
+        if (coords.size() < 2) continue;
+
+        vector<int> rows, cols;
+        for (auto [x, y] : coords) {
+            rows.push_back(x);
+            cols.push_back(y);
         }
-        a = (a * 1LL * a) % m;
-        b >>= 1;
-    }
-    return result;
-}
-ll modexp(ll a)
-{
-    return binexp(a, M - 2, M);
-}
-void merge(vector<ll> &arr, int low, int mid, int high)
-{
-    vector<int> temp;    // temporary array
-    int left = low;      // starting index of left half of arr
-    int right = mid + 1; // starting index of right half of arr
 
-    
+        sort(rows.begin(), rows.end());
+        sort(cols.begin(), cols.end());
 
-    // storing elements in the temporary array in a sorted manner//
+        long long k = coords.size();
+        long long row_sum = 0, col_sum = 0;
 
-    while (left <= mid && right <= high)
-    {
-        if (arr[left] <= arr[right])
-        {
-            temp.push_back(arr[left]);
-            left++;
+        for (long long i = 0; i < k; ++i) {
+            row_sum += (2 * i - k + 1) * 1LL * rows[i];
+            col_sum += (2 * i - k + 1) * 1LL * cols[i];
         }
-        else
-        {
-            temp.push_back(arr[right]);
-            
-            right++;
+
+        total_manhattan_distance += row_sum + col_sum;
+    }
+
+    return total_manhattan_distance;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    string inputline;
+    getline(cin, inputline);
+    int n = stoi(trim(inputline));
+
+    getline(cin, inputline);
+    int m = stoi(trim(inputline));
+
+    vector<vector<int>> a(n, vector<int>(m));
+    for (int i = 0; i < n; ++i) {
+        getline(cin, inputline);
+        vector<string> parts = splitstring(trim(inputline));
+        for (int j = 0; j < m; ++j) {
+            a[i][j] = stoi(parts[j]);
         }
     }
 
-    // if elements on the left half are still left //
-
-    while (left <= mid)
-    {
-        temp.push_back(arr[left]);
-        left++;
-    }
-
-    //  if elements on the right half are still left //
-    while (right <= high)
-    {
-        temp.push_back(arr[right]);
-        right++;
-    }
-
-    // transfering all elements from temporary to arr //
-    for (int i = low; i <= high; i++)
-    {
-        arr[i] = temp[i - low];
-    }
-
-    return ; // Modification 3
-}
-
-void mergeSort(vector<ll> &arr, int low, int high)
-{
-
-    if (low >= high)
-        return ;
-    int mid = (low + high) / 2;
-    mergeSort(arr, low, mid);      // left half
-    mergeSort(arr, mid + 1, high); // right half
-    merge(arr, low, mid, high);    // merging sorted halves
-    return ;
-}
-
-
-
-void bfs(vector<vector<int>> &adj, unordered_map<int, bool> &visited, vector<int> &ans, int node, map<tuple<int, int>, int> &wts)
-{
-    queue<int> q;
-    q.push(node);
-    visited[node] = 1;
-    bool pos = true;
-    while (!q.empty())
-    {
-        int frontNode = q.front();
-        q.pop();
-        ans.push_back(frontNode);
-        for (auto i : adj[frontNode])
-        {
-            if (!visited[i])
-            {
-                q.push(i);
-                visited[i] = 1;
-                tuple<int, int> t1 = make_tuple(frontNode, i);
-                if (pos)
-                {
-                    wts[t1] = 2;
-                }
-                else
-                {
-                    wts[t1] = 5;
-                }
-                pos = !pos;
-            }
-        }
-    }
-}
-
-void DFSRec(vector<vector<int>> &adj, vector<bool> &visited, int s)
-{
-
-    visited[s] = true;
-    cout << s << " ";
-
-    for (int i : adj[s])
-    {
-        if (visited[i] == false)
-        {
-            DFSRec(adj, visited, i);
-        }
-    }
-}
-
-void DFS(vector<vector<int>> &adj, int s)
-{
-    vector<bool> visited(adj.size(), false);
-    DFSRec(adj, visited, s);
-}
-
-vll spiral_order_matrix_traversal(vector<vll> &arr, int n, int m)
-{
-    int row_start = 0;
-    int row_end = n - 1;
-    int col_start = 0;
-    int col_end = m - 1;
-    vll tmp;
-    while (row_start <= row_end && col_start <= col_end)
-    {
-        for (int i = col_end; i <= col_end; i++)
-        {
-            tmp.push_back(arr[row_start][i]);
-        }
-        row_start++;
-        for (int i = row_start; i <= row_end; i++)
-        {
-            tmp.push_back(arr[i][col_end]);
-        }
-        col_end--;
-        for (int i = col_end; i >= col_start; i--)
-        {
-            tmp.push_back(arr[row_end][i]);
-        }
-        row_end--;
-        for (int i = row_end; i >= row_start; i--)
-        {
-            tmp.push_back(arr[i][col_start]);
-        }
-        col_start++;
-    }
-    return tmp;
-}
-
-long double dist(long double ax, long double ay, long double bx, long double by)
-{
-    long double e1 = abs(ax - bx);
-    long double e2 = abs(ay - by);
-    e1 = e1 * e1;
-    e2 = e2 * e2;
-    long double ans = e1 + e2;
-    ans = sqrtl(ans);
-    return ans;
-}
-
-bool is_prime(ll num)
-{
-    if (num == 1)
-    {
-        return false;
-    }
-    for (ll i = 2; i * i <= num; i++)
-    {
-        if (num % i == 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-bool is_sorted(vll v)
-{
-    for (int i = 1; i < v.size(); i++)
-    {
-        if (v[i] < v[i - 1])
-        {
-            return false;
-        }
-    }
-    return true;
-}
-static bool cmp(pair<ll, ll> a, pair<ll, ll> b)
-{
-    if (a.second < b.second)
-    {
-        return true;
-    }
-    return false;
-}
-class Compare
-{
-public:
-    bool operator()(pair<ll, int> a, pair<ll, int> b)
-    {
-        if (a.first == b.first)
-        {
-            return a.second > b.second;
-        }
-        return a.first < b.first;
-    }
-};
-
-// Figuring out the Nature of an Optimal Solution. One of the most important thing in problems imo.
-
-// Solving subtasks of the original problem and then trying to extend/generalize your solution.
-
-// Fixing a parameter and then trying to maximise the result with respect to that fixed parameter.
-
-// Finding necessary and sufficient conditions. Sometimes, your necessary conditions themselves become sufficient, or vice versa.
-
-// Identifying Lower and Upper bounds, and constructing them.
-
-// Reducing a problem into smaller subproblems, commonly used with Dynamic Programming or Inductive Proofs.
-
-// Considering the Decision Version of the Problem instead. Especially useful in Counting problems, where you need to count number of good subsequences for example.
-
-// Formalizing the Problem
-
-int helper(vi &arr, int i,int pre,map<pair<int,int>,int>&dp){
-    if(i==arr.size()){
-        return 0;
-    }
-    if(dp.find({i,pre})!=dp.end()){
-        return dp[{i,pre}];
-    }
-    int curr=0;
-    if(pre==0 || arr[i]%pre==0){
-        curr=1+helper(arr,i+1,arr[i],dp);
-    }
-    curr=max(curr, helper(arr,i+1,pre,dp));
-    dp[{i,pre}]=curr;
-    return curr;
-}
-
-void solve()
-{
-    int n;
-    cin>>n;
-    unordered_map<int,bool>present;
-    vi arr(n);
-    loop(0,n){
-        cin>>arr[i];
-        present[arr[i]]=true;
-    }
-
-    vector<int>dp(1e6+1,0);
-    int ans=0;
-    for(int i=1;i<=1e6;i++){
-        if(!present[i]){
-            continue;
-        }
-        dp[i]=max(dp[i],1);
-        ans=max(ans,dp[i]);
-        for(int j=i*2;j<=1e6;j+=i){
-            dp[j]=max(dp[j],1+dp[i]);            
-        }
-    }
-
-    cout<<ans<<endl;
-}
-
-int main()
-{
-    int t;
-    t = 1;
-    // cin>>t;
-    
-    for (int j = 0; j < t; j++)
-    {
-        solve();
-    }
+    cout << solve(n, m, a) << "\n";
+    return 0;
 }
