@@ -14,120 +14,51 @@ typedef pair<int, int> ii;
 typedef vector<ll> vll;
 const int M = 1000000007;
 
-int helper1(ll x,int n,vll &p,vll &a, int curr){
-    int s=curr;
-    int e=n-1;
-    int ans=n;
-    while(s<=e){
-        int mid=(s+e)/2;
-        ll pre=0;
-        if(curr-1>=0){
-            pre=a[curr-1];
-        }
-        ll pst=0;
-        if(mid-1>=curr){
-            pst=a[mid-1];
-        }
-        if(x+pst-pre>p[mid]){
-            ans=min(ans,mid);
-            e=mid-1;
-        }
-        else{
-            s=mid+1;
-        }
+void helper(ll n, ll tmp,ll &ans){
+    if(n*1000<tmp){
+        return;
     }
-    return ans;
-}   
-
-int helper2(ll x, int n, vll &p, vll &b, int curr){
-    int s=curr;
-    int e=n-1;
-    int ans=n;
-    while(s<=e){
-        int mid=(s+e)/2;
-        // cout<<mid<<endl;
-        ll pre=0;
-        if(curr-1>=0){
-            pre=b[curr-1];
+    if(tmp>=n){
+        ll tmp2=tmp;
+        // cout<<tmp<<endl;
+        int sc=0;
+        int fc=0;
+        while (tmp2>0)
+        {
+            int tmp3=tmp2%10;
+            tmp2=tmp2/10;
+            if(tmp3==4){
+                fc++;
+                continue;
+            }
+            if(tmp3==7){
+                sc++;
+                continue;
+            }
         }
-        ll pst=0;
-        if(mid-1>=curr){
-            pst=b[mid-1];
+        if(sc==fc){
+            // cout<<
+            ans=min(ans,tmp);
         }
-        if(x-1*(pst-pre)<=p[mid]){
-            ans=min(ans,mid);
-            e=mid-1;
-        }
-        else{
-            s=mid+1;
-        }
+        helper(n,tmp*10+7,ans);
+        helper(n,tmp*10+7,ans);
+        return;
     }
-    return ans;
+    helper(n,tmp*10+4,ans);
+    helper(n,tmp*10+7,ans);
 }
 
 void solve()
 {
-    int n;
-    cin>>n;
-    vll p(n),a(n),b(n);
-    loop(0,n){
-        cin>>p[i]>>a[i]>>b[i];
+    ll a,b;
+    cin>>a>>b;
+    if(a==b){
+        cout<<0<<" "<<0<<endl;
+        return;
     }
-    loop(1,n){
-        a[i]+=a[i-1];
-        b[i]+=b[i-1];
-    }
-    int q;
-    cin>>q;
-    while(q--){
-        ll x;
-        cin>>x;
-        // cout<<x<<endl;
-        int curr=0;
-        while (curr<n)
-        {
-            if(x<=p[curr]){
-                int j=helper1(x,n,p,a,curr);
-                // cout<<curr<<" idx1 "<<j<<endl;
-                ll pre=0;
-                if(curr-1>=0){
-                    pre=a[curr-1];
-                }
-                ll pst=0;
-                if(j-1>=curr){
-                    pst=a[j-1];
-                }
-                x+=pst-pre;
-                // cout<<x<<endl;
-                curr=j;
-            }
-            else{
-                int j=helper2(x,n,p,b,curr);
-                // cout<<curr<<" idx2 "<<j<<endl;
-                if(j==curr-1){
-                    x=0;
-                    curr++;
-                    continue;
-                }
-                ll pre=0;
-                if(curr-1>=0){
-                    pre=b[curr-1];
-                }
-                ll pst=0;
-                if(j-1>=curr){
-                    pst=b[j-1];
-                }
-                
-                x-=pst-pre;
-                // cout<<x<<endl;
-                x=max<ll>(x,0);
-                // cout<<pst<<" "<<pre<<endl;
-                curr=j;
-            }
-        }
-        cout<<x<<endl;
-    }
-    
+    ll g=abs(a-b);
+    ll ans=min(a%g,g-a%g);
+    cout<<g<<" "<<ans<<endl;
 }
 
 int main()
@@ -136,7 +67,7 @@ int main()
     cin.tie(NULL);
     int t;
     t = 1;
-    // cin>>t;
+    cin>>t;
     while (t--)
     {
         solve();
