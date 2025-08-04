@@ -14,6 +14,51 @@ typedef pair<int, int> ii;
 typedef vector<ll> vll;
 const int M = 1000000007;
 
+class Solution {
+public:
+    bool checker(vector<int>& fruits,int mid){
+        set<int>st;
+        map<int,int>freq;
+        for(int i=0;i<mid;i++){
+            freq[fruits[i]]++;
+            st.insert(fruits[i]);
+        }
+        if(st.size()<=2){
+            return true;
+        }
+        int j=0;
+        for(int i=mid;i<fruits.size();i++){
+            freq[fruits[j]]--;
+            freq[fruits[i]]++;
+            if(freq[fruits[j]]==0){
+                st.erase(fruits[j]);
+            }
+            st.insert(fruits[i]);
+            j++;
+            if(st.size()<=2){
+                return true;
+            }
+        }
+        return false;
+    }
+    int totalFruit(vector<int>& fruits) {
+        int s=1;
+        int e=fruits.size();
+        int ans=s;
+        while(s<=e){
+            int mid=(s+e)/2;
+            if(checker(fruits,mid)){
+                ans=max(ans,mid);
+                s=mid+1;
+            }
+            else{
+                e=mid-1;
+            }
+        }
+        return ans;
+    }
+};
+
 void helper(ll n, ll tmp,ll &ans){
     if(n*1000<tmp){
         return;
