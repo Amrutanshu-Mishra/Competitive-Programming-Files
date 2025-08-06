@@ -126,44 +126,44 @@ ll count_inversions(vector<ll>&a, int n) {
 
 
 void solve(){
-    int n;
-    cin>>n;
-    string s;
-    cin>>s;
-    vi pd(n,0);
-    vi pk(n,0);
-    pd[0]=(s[0]=='D');
-    pk[0]=(s[0]=='K');
-    loop(1,n){
-        pd[i]=pd[i-1]+(s[i]=='D');
-        pk[i]=pk[i-1]+(s[i]=='K');
+    ll x;
+    cin>>x;
+    ll x1=x;
+    priority_queue<ll,vll,greater<ll>> arr;
+    arr.push(1);
+    for(ll i=2;i*i<=x;i++){
+        while(x%i==0){
+            arr.push(i);
+            x=x/i;
+        }
     }
-    int g1=gcd(pd[0],pk[0]);
-    map<pair<int,int>,int>m1;
-    m1[{pd[0]/g1,pk[0]/g1}]=1;
-    set<pair<int,pair<int,int>>>st;
-    st.insert({1,{pd[0]/g1,pk[0]/g1}});
-    vi ans(n,0);
-    ans[0]=1;
-    loop(1,n){
-        ll g2=gcd(pd[i],pk[i]);
-        int p1=m1[{pd[i]/g2,pk[i]/g2}];
-        st.erase({p1,{pd[i]/g2,pk[i]/g2}});
-        p1++;
-        m1[{pd[i]/g2,pk[i]/g2}]=p1;
-        st.insert({p1,{pd[i]/g2,pk[i]/g2}});
-        // int p2=(*st.rbegin()).first;
-        ans[i]=p1;
+    if(x>=2){
+        arr.push(x);
     }
-    loop(0,n){
-        cout<<ans[i]<<" ";
+    ll a1=1;
+    ll a2=1;
+    while (arr.size()>0)
+    {
+        // cout<<arr.top()<<" ";
+        if(a1<=a2){
+            a1=a1*arr.top();
+            arr.pop();
+        }
+        else{
+            a2=a2*arr.top();
+            arr.pop();
+        }
     }
-    cout<<endl;
+    // cout<<endl;
+    cout<<a1<<" "<<a2<<endl;
+    
 }  
 int main(){ 
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
     int t;
-    cin>>t;
-    // t=1;
+    // cin>>t;
+    t=1;
     for(int j=0;j<t;j++)
     {
         solve();

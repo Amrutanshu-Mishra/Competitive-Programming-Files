@@ -72,14 +72,14 @@ ll modexp(ll a)
 {
      return binexp(a, M - 2, M);
 }
-vector<ll> dijkstra(vector<vector<vll>>&adj,int n,int src){
-     vector<ll>ans(n,1e11);
+vector<long long> dijkstra(vector<vector<vector<long long>>>&adj,int n,int src){
+     vector<long long>ans(n,1e11);
      ans[src]=0;
-     set<pair<ll,ll>>se1;
+     set<pair<long long,long long>>se1;
      se1.insert({0,src});
      while (se1.size()>0)
      {
-          pair<ll,ll>p1=*(se1.begin());
+          pair<long long,long long>p1=*(se1.begin());
           int node=p1.second;
           int dis=p1.first;
           se1.erase(p1); 
