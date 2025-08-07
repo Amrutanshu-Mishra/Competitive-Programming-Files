@@ -126,44 +126,28 @@ ll count_inversions(vector<ll>&a, int n) {
 
 
 void solve(){
-    ll x;
-    cin>>x;
-    ll x1=x;
-    priority_queue<ll,vll,greater<ll>> arr;
-    arr.push(1);
-    for(ll i=2;i*i<=x;i++){
-        while(x%i==0){
-            arr.push(i);
-            x=x/i;
+    int n;
+    cin>>n;
+    vi arr(n);
+    loop(0,n){
+        cin>>arr[i];
+    }
+    int ans=0;
+    loop(0,n){
+        ans+=arr[i];
+        if(arr[i]==0){
+            ans++;
         }
     }
-    if(x>=2){
-        arr.push(x);
-    }
-    ll a1=1;
-    ll a2=1;
-    while (arr.size()>0)
-    {
-        // cout<<arr.top()<<" ";
-        if(a1<=a2){
-            a1=a1*arr.top();
-            arr.pop();
-        }
-        else{
-            a2=a2*arr.top();
-            arr.pop();
-        }
-    }
-    // cout<<endl;
-    cout<<a1<<" "<<a2<<endl;
-    
+    cout<<ans<<endl;
 }  
+
 int main(){ 
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(NULL);
     int t;
-    // cin>>t;
     t=1;
+    cin>>t;
     for(int j=0;j<t;j++)
     {
         solve();
