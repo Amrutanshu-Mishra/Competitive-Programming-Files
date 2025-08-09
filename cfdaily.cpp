@@ -83,59 +83,22 @@ void solve()
     loop(0,n){
         cin>>arr[i];
     }
-    string s="";
-    vll ans;
-    int i=0;
-    int j=n-1;
-    bool b=true;
-    while(i<j){
-        if(arr[i]==arr[j]){
-            ans.push_back(arr[i]);
-            s+="L";
-            i++;
+
+    bool pos=true;
+    ll curr=arr[0];
+    for(int i=1;i<n;i++){
+        if(arr[i]-curr>=curr){
+            pos=false;
+            break;
         }
-        else if(arr[i]<arr[j]){
-            if(b){
-                ans.push_back(arr[j]);
-                s+="R";
-                j--;
-                b=!b;
-                continue;
-            }
-            else{
-                ans.push_back(arr[i]);
-                s+="L";
-                i++;
-                b=!b;
-                continue;
-            }
-        }
-        else{
-            if(!b){
-                ans.push_back(arr[j]);
-                s+="R";
-                j--;
-                b=!b;
-                continue;
-            }
-            else{
-                ans.push_back(arr[i]);
-                s+="L";
-                i++;
-                b=!b;
-                continue;
-            }
-        }
+        curr=min(curr,arr[i]);
     }
-    if(i==j){
-        ans.push_back(arr[i]);
-        s+="L";
+    if(pos){
+        cout<<"YES"<<"\n";
     }
-    // for(auto i:ans){
-    //     cout<<i<<" ";
-    // }
-    // cout<<endl;
-    cout<<s<<endl;
+    else{
+        cout<<"NO"<<"\n";
+    }
 }
 int main()
 {
