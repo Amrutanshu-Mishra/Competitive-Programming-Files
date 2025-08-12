@@ -83,21 +83,13 @@ void solve()
     loop(0,n){
         cin>>arr[i];
     }
-
-    bool pos=true;
-    ll curr=arr[0];
-    for(int i=1;i<n;i++){
-        if(arr[i]-curr>=curr){
-            pos=false;
-            break;
-        }
-        curr=min(curr,arr[i]);
-    }
-    if(pos){
-        cout<<"YES"<<"\n";
+    set<ll>s(arr.begin(),arr.end());
+    s.erase(-1);
+    if(s.size()<=1 && !s.count(0)){
+        cout<<"YES"<<endl;
     }
     else{
-        cout<<"NO"<<"\n";
+        cout<<"NO"<<endl;
     }
 }
 int main()
