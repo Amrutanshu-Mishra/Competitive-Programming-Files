@@ -32,6 +32,27 @@ ll modexp(ll a)
     return binexp(a, M - 2, M);
 }
 
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+        if(n<=0){
+            return false;
+        }
+        int curr=n;
+        while(curr>1){
+            if(curr%3){
+                return false;
+            }
+            curr=curr/3;
+        }
+        if(curr==0){
+            return curr;
+        }
+        cout<<curr<<endl;
+        return true;
+    }
+};
+
 void helper(string curr, int n, vector<string> &v)
 {
     if (n == 0)

@@ -1,104 +1,36 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define mp make_pair
-#define fi first
-#define se second
-#define ll long long
-#define ull unsigned long long
-#define ui unsigned int
-#define us unsigned short
-#define loop(j, n) for (int i = j; i < n; i++)
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef pair<int, int> ii;
-typedef vector<ll> vll;
 
-const int M = 1e9 + 7;
-int get_bit(ll n, ll pos)
-{
-    return (n & (1LL << pos)) != 0;
-}
-ll set_bit(ll n, int pos)
-{
-    n = n | (1 << pos);
-    return n;
-}
-ll clear_bit(ll n, int pos)
-{
-    int ele = 1 << pos;
-    ele = ~ele;
-    n = n & ele;
-    return n;
-}
-void update_bit(int &n, int pos, int value)
-{
-    int mark = ~(1 << pos);
-    n = n & mark;
-    n = n | (value << pos);
-}
-ll gcd(ll a, ll b)
-{
-    if (a == 0)
-    {
-        return b;
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-ll lcm(ll a, ll b)
-{
-    ll ele = a * b;
-    ll ele1 = gcd(a, b);
-    return ele / ele1;
-}
-ll binexp(ll a, ll b, ll m)
-{
-    ll result = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-        {
-            result = (result * 1LL * a) % m;
+int32_t main() {
+    cin.tie(0); cout.tie(0); ios_base::sync_with_stdio(0);
+    int tc;
+    cin >> tc;
+    while(tc--) {
+        int n, x;
+        string s;
+        cin >> n >> x >> s;
+        if(x==1 || x==n) {
+            cout << "1\n";
+            continue;
         }
-        a = (a * 1LL * a) % m;
-        b >>= 1;
-    }
-    return result;
-}
-ll modexp(ll a)
-{
-    return binexp(a, M - 2, M);
-}
-
-
-void solve()
-{
-    ll n;
-    cin>>n;
-
-    vll arr(n);
-    loop(0,n){
-        cin>>arr[i];
-    }
-    set<ll>s(arr.begin(),arr.end());
-    s.erase(-1);
-    if(s.size()<=1 && !s.count(0)){
-        cout<<"YES"<<endl;
-    }
-    else{
-        cout<<"NO"<<endl;
-    }
-}
-int main()
-{
-    int t;
-    cin >> t;
-    for (int j = 0; j < t; j++)
-    {
-        solve();
+        x--;
+        int inf = 1e9;
+        int lf=-inf, rg=inf;
+        for(int i=x-1; i>=0; i--)
+            if(s[i]=='#') {
+                lf=i;
+                break;
+            }
+        for(int i=x+1; i<n; i++)
+            if(s[i]=='#') {
+                rg=i;
+                break;
+            }
+        if(lf==-inf && rg==inf) {
+            cout << "1\n";
+            continue;
+        }
+        cout << max(min(x+1, n-rg+1), min(lf+2, n-x)) << '\n';
     }
     return 0;
 }
