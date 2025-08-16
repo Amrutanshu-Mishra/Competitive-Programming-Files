@@ -72,57 +72,70 @@ ll modexp(ll a)
 {
     return binexp(a, M - 2, M);
 }
+
+bool checker(string s, string t, int mid){
+    int i=0;
+    int j=0;
+    while(j<t.size() && i<s.size()){
+        if(s[i]==t[j]){
+            i+=mid;
+            j++;
+        }
+        else{
+            i++;
+        }
+    }
+    if(j<t.size()){
+        return false;
+    }
+    return true;
+}
+
 void solve()
 {
-    int n,k;
-    cin >> n >> k;
-    vll arr(n);
-    loop(0, n)
+    int n,m;
+    cin>>n>>m;
+    string s,t;
+    cin>>s>>t;
+    int ans=0;
+    int i=n-1;
+    int j=m-1;
+    vi arr1;
+    vi arr2;
+    while (i>=0 && j>=0)
     {
-        cin >> arr[i];
-    }
-    map<int,bool>m1;
-    loop(0,n){
-        if(arr[i] == 0){
-            // cout<<0<<endl;
-            continue;
+        if(s[i]==t[j]){
+            arr1.push_back(i);
+            i--;
+            j--;
         }
-        ll curr=arr[i];
-        vi a;
-        while (curr>0)
-        {
-            a.push_back(curr%k);
-            curr/=k;
-        }
-        // reverse(a.begin(), a.end());
-        // for(auto i:a){
-        //     cout<<i<<" ";
-        // }
-        // cout<<endl;
-        for(int i=0;i<a.size();i++){
-            if(a[i] && m1[i]){
-                cout<<"NO"<<endl;
-                return;
-            }
-            if(a[i]==0){
-                continue;
-            }
-            if(a[i]>1){
-                cout<<"NO"<<endl;
-                return;
-            }
-            if(a[i]){
-                m1[i]=true;
-            }
+        else{
+            i--;
         }
     }
-    cout<<"YES"<<endl;
+    i=0;
+    j=0;
+    while(i<n && j<m){
+        if(s[i]==t[j]){
+            arr2.push_back(i);
+            i++;
+            j++;
+        }
+        else{
+            i++;
+        }
+    }
+    reverse(arr1.begin(),arr1.end());
+    loop(0,arr1.size()-1){
+        ans=max(ans,arr1[i+1]-arr2[i]);
+    }
+    cout<<ans<<"\n";
 }
 int main()
 {
     int t;
     t=1;
-    cin >> t;
+    // cin >> t;
     for (int j = 0; j < t; j++)
     {
         solve();

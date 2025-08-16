@@ -10,7 +10,8 @@ struct manacher{
         p.assign(n,1);  
         int l=1, r=1;
         for(int i=1;i<n;i++){
-            p[i] = max(0, min(r-i, p[l+r-i]));
+            p[i] = max(0, min(r-i,l+r-i>=0 ? p[l+r-i] : INT32_MAX));
+            // cout<<i<<" "<<l+r-i<<" "<<p[l+r-i]<<endl;
             while (i+p[i]<n && i-p[i]>=0 &&s[i+p[i]] == s[i-p[i]])
             {
                 p[i]++;
@@ -20,11 +21,6 @@ struct manacher{
                 r = i+p[i];
             }
         }
-
-        // for(auto v:p){
-        //     cout<<v<<" ";
-        // }
-        // cout<<endl;
     }
 
     void build(string s){
