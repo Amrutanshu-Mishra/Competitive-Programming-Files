@@ -93,43 +93,26 @@ bool checker(string s, string t, int mid){
 
 void solve()
 {
-    int n,m;
-    cin>>n>>m;
-    string s,t;
-    cin>>s>>t;
-    int ans=0;
-    int i=n-1;
-    int j=m-1;
-    vi arr1;
-    vi arr2;
-    while (i>=0 && j>=0)
+    ll a,b,x,y;
+    cin>>a>>b>>x>>y;
+    ll s=1;
+    ll e=2*1e9;
+    ll ans=0;
+    ll g1=gcd(x,y);
+    x/=g1;
+    y/=g1;
+    while (s<=e)
     {
-        if(s[i]==t[j]){
-            arr1.push_back(i);
-            i--;
-            j--;
+        ll mid = (s+e)/2;
+        if(x*mid<=a && y*mid<=b){
+            ans=max(ans,mid);
+            s=mid+1;
         }
         else{
-            i--;
+            e=mid-1;
         }
     }
-    i=0;
-    j=0;
-    while(i<n && j<m){
-        if(s[i]==t[j]){
-            arr2.push_back(i);
-            i++;
-            j++;
-        }
-        else{
-            i++;
-        }
-    }
-    reverse(arr1.begin(),arr1.end());
-    loop(0,arr1.size()-1){
-        ans=max(ans,arr1[i+1]-arr2[i]);
-    }
-    cout<<ans<<"\n";
+    cout<<x*ans<<" "<<y*ans<<endl;
 }
 int main()
 {
