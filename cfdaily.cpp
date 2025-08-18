@@ -93,32 +93,37 @@ bool checker(string s, string t, int mid){
 
 void solve()
 {
-    ll a,b,x,y;
-    cin>>a>>b>>x>>y;
-    ll s=1;
-    ll e=2*1e9;
-    ll ans=0;
-    ll g1=gcd(x,y);
-    x/=g1;
-    y/=g1;
-    while (s<=e)
-    {
-        ll mid = (s+e)/2;
-        if(x*mid<=a && y*mid<=b){
-            ans=max(ans,mid);
-            s=mid+1;
-        }
-        else{
-            e=mid-1;
-        }
+    int n;
+    cin>>n;
+    vll arr(n);
+    loop(0,n){
+        cin>>arr[i];
     }
-    cout<<x*ans<<" "<<y*ans<<endl;
+    ll m1=0;
+    loop(0,n){
+        m1=max(m1,arr[i]);
+    }
+    if(m1==0){
+        cout<<0<<endl;
+        return;
+    }
+    sort(arr.begin(),arr.end());
+    ll s1=0;
+    loop(0,n-1){
+        s1+=arr[i];
+    }
+    if(arr[n-1]<=s1){
+        cout<<1<<endl;
+        return ;
+    }
+    cout<<arr[n-1]-s1<<endl;
+    return;
 }
 int main()
 {
     int t;
     t=1;
-    // cin >> t;
+    cin >> t;
     for (int j = 0; j < t; j++)
     {
         solve();
