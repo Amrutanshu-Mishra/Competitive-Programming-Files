@@ -91,39 +91,60 @@ bool checker(string s, string t, int mid){
     return true;
 }
 
+vi helper(string s, string ex){
+    int n=s.size();
+    vi v(n);
+    int j=0;
+    for(int i=0;i<s.size();i++){
+        if(s[i]==ex[j]){
+            v[i]=0;
+        }
+        else{
+            v[i]=1;
+        }
+        j=(j+1)%3;
+    }
+    loop(1,n){
+        v[i]+=v[i-1];
+    }
+    return v;
+}
+
 void solve()
 {
-    int n;
-    cin>>n;
-    vll arr(n);
-    loop(0,n){
-        cin>>arr[i];
+    int n,m;
+    cin>>n>>m;
+    string s;
+    cin>>s;
+    vvi arr(6);
+    arr[0]=helper(s,"abc");
+    arr[1]=helper(s,"acb");
+    arr[2]=helper(s,"bac");
+    arr[3]=helper(s,"bca");
+    arr[4]=helper(s,"cab");
+    arr[5]=helper(s,"cba");
+    while(m--){
+        int l,r;
+        cin>>l>>r;
+        l--;r--;
+        int ans=n;
+        for (int j = 0; j < 6; j++)
+        {
+            int tmp=0;
+            if(l-1>=0){
+                tmp=arr[j][l-1];
+            }
+            ans=min(ans,arr[j][r]-tmp);
+        }
+        cout<<ans<<endl;
     }
-    ll m1=0;
-    loop(0,n){
-        m1=max(m1,arr[i]);
-    }
-    if(m1==0){
-        cout<<0<<endl;
-        return;
-    }
-    sort(arr.begin(),arr.end());
-    ll s1=0;
-    loop(0,n-1){
-        s1+=arr[i];
-    }
-    if(arr[n-1]<=s1){
-        cout<<1<<endl;
-        return ;
-    }
-    cout<<arr[n-1]-s1<<endl;
-    return;
+    // cout<<endl;
 }
 int main()
 {
     int t;
     t=1;
-    cin >> t;
+    // cin >> t;
     for (int j = 0; j < t; j++)
     {
         solve();
