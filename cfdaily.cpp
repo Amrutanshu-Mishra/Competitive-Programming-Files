@@ -72,79 +72,20 @@ ll modexp(ll a)
 {
     return binexp(a, M - 2, M);
 }
-
-bool checker(string s, string t, int mid){
-    int i=0;
-    int j=0;
-    while(j<t.size() && i<s.size()){
-        if(s[i]==t[j]){
-            i+=mid;
-            j++;
-        }
-        else{
-            i++;
-        }
-    }
-    if(j<t.size()){
-        return false;
-    }
-    return true;
-}
-
-vi helper(string s, string ex){
-    int n=s.size();
-    vi v(n);
-    int j=0;
-    for(int i=0;i<s.size();i++){
-        if(s[i]==ex[j]){
-            v[i]=0;
-        }
-        else{
-            v[i]=1;
-        }
-        j=(j+1)%3;
-    }
-    loop(1,n){
-        v[i]+=v[i-1];
-    }
-    return v;
-}
-
 void solve()
 {
-    int n,m;
-    cin>>n>>m;
-    string s;
-    cin>>s;
-    vvi arr(6);
-    arr[0]=helper(s,"abc");
-    arr[1]=helper(s,"acb");
-    arr[2]=helper(s,"bac");
-    arr[3]=helper(s,"bca");
-    arr[4]=helper(s,"cab");
-    arr[5]=helper(s,"cba");
-    while(m--){
-        int l,r;
-        cin>>l>>r;
-        l--;r--;
-        int ans=n;
-        for (int j = 0; j < 6; j++)
-        {
-            int tmp=0;
-            if(l-1>=0){
-                tmp=arr[j][l-1];
-            }
-            ans=min(ans,arr[j][r]-tmp);
-        }
-        cout<<ans<<endl;
+    int n;
+    cin >> n;
+    vll arr(n);
+    loop(0, n)
+    {
+        cin >> arr[i];
     }
-    // cout<<endl;
 }
 int main()
 {
     int t;
-    t=1;
-    // cin >> t;
+    cin >> t;
     for (int j = 0; j < t; j++)
     {
         solve();
