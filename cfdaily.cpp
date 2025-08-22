@@ -75,12 +75,28 @@ ll modexp(ll a)
 void solve()
 {
     int n;
-    cin >> n;
-    vll arr(n);
-    loop(0, n)
-    {
-        cin >> arr[i];
+    cin>>n;
+    string a;
+    cin>>a;
+    int m;
+    cin>>m;
+    string b;
+    cin>>b;
+    string c;
+    cin>>c;
+    string ans="";
+    ans=a;
+    for(int i=0;i<m;i++){
+        if(c[i]=='V'){
+            string tmp="";
+            tmp+=b[i];
+            ans=tmp+ans;
+        }
+        else{
+            ans+=b[i];
+        }
     }
+    cout<<ans<<endl;
 }
 int main()
 {
