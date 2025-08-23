@@ -13,94 +13,109 @@ typedef vector<vi> vvi;
 typedef pair<int, int> ii;
 typedef vector<ll> vll;
 
-const int M = 1e9 + 7;
-int get_bit(ll n, ll pos)
-{
-    return (n & (1LL << pos)) != 0;
-}
-ll set_bit(ll n, int pos)
-{
-    n = n | (1 << pos);
-    return n;
-}
-ll clear_bit(ll n, int pos)
-{
-    int ele = 1 << pos;
-    ele = ~ele;
-    n = n & ele;
-    return n;
-}
-void update_bit(int &n, int pos, int value)
-{
-    int mark = ~(1 << pos);
-    n = n & mark;
-    n = n | (value << pos);
-}
-ll gcd(ll a, ll b)
-{
-    if (a == 0)
-    {
-        return b;
-    }
-    if (b == 0)
-    {
-        return a;
-    }
-    return gcd(b, a % b);
-}
-ll lcm(ll a, ll b)
-{
-    ll ele = a * b;
-    ll ele1 = gcd(a, b);
-    return ele / ele1;
-}
-ll binexp(ll a, ll b, ll m)
-{
-    ll result = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-        {
-            result = (result * 1LL * a) % m;
-        }
-        a = (a * 1LL * a) % m;
-        b >>= 1;
-    }
-    return result;
-}
-ll modexp(ll a)
-{
-    return binexp(a, M - 2, M);
-}
 void solve()
 {
-    int n;
-    cin>>n;
-    string a;
-    cin>>a;
-    int m;
-    cin>>m;
-    string b;
-    cin>>b;
-    string c;
-    cin>>c;
-    string ans="";
-    ans=a;
-    for(int i=0;i<m;i++){
-        if(c[i]=='V'){
-            string tmp="";
-            tmp+=b[i];
-            ans=tmp+ans;
+    ll n,k;
+    cin>>n>>k;
+    string s;
+    cin>>s;
+    vll arr(n);
+    loop(0,n){
+        cin>>arr[i];
+    }
+    // loop(0,n){
+    //     cout<<arr[i]<<" ";
+    // }
+
+    int idx=-1;
+    ll ts=INT64_MIN;
+    loop(0,n){
+        if(s[i]=='0'){
+            idx=i;
+            break;
         }
-        else{
-            ans+=b[i];
+        // ts+=arr[i];
+    }
+    if(idx==-1){
+        ll curr1=0;
+        loop(0,n){
+            curr1+=arr[i];
+            ts=max(ts,curr1);
+            if(curr1<0){
+                curr1=0;
+            }
+        }
+        if(ts==k){
+            cout<<"Yes"<<endl;
+            loop(0,n){
+                cout<<arr[i]<<" ";
+            }
+            cout<<endl;
+            return;
+        }
+        cout<<"No"<<endl;
+        return;
+    }
+    ll s1=INT64_MIN;
+    ll s2=INT64_MIN;
+    ll curr1=0;
+    for(int i=idx-1;i>=0;i--){
+        if(i<0){
+            break;
+        }
+        curr1+=arr[i];
+        s1=max(s1,curr1);
+    }
+    curr1=0;
+    for(int i=idx+1;i<n;i++){
+        if(s[i]=='0'){
+            break;
+        }
+        curr1+=arr[i];
+        s2=max(s2,curr1);
+    }
+    if(s2==INT64_MIN){
+        s2=0;
+    }
+    if(s1==INT64_MIN){
+        s1=0;
+    }
+    arr[idx]=k-max(s1,max(s2,s1+s2));
+    for(int i=0;i<n;i++){
+        if(idx==i) continue;
+        if(s[i]=='0'){
+            arr[i]=-1e18;
         }
     }
-    cout<<ans<<endl;
+    ll chker=INT64_MIN;
+    curr1=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]==-1e18){
+            chker=max(chker,curr1);
+            curr1=0;
+            continue;
+        }
+        curr1+=arr[i];
+        chker=max(chker,curr1);
+        if(curr1<0){
+            curr1=0;
+        }
+    }
+    
+    if(chker!=k){
+        cout<<"No"<<endl;
+        return;
+    }
+    cout<<"Yes"<<endl;
+    loop(0,n){
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
 }
 int main()
 {
     int t;
+    t=1;
     cin >> t;
     for (int j = 0; j < t; j++)
     {

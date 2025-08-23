@@ -43,7 +43,7 @@ struct manacher{
         return 0;
     }
 
-    pair<int,int> getLongestSubstringPos(string s) {
+    pair<int,int> getLongestSubstringPos() {
         int center = 0, radius = 0;
         for (int i = 0; i < p.size(); i++) {
             if (p[i] > radius) {
@@ -64,7 +64,7 @@ void solve()
     manacher m;
     m.build(s);
     // auto [start, len] = m.getLongestSubstringPos(s);
-    pair<int,int>p = m.getLongestSubstringPos(s);
+    pair<int,int>p = m.getLongestSubstringPos();
     cout << s.substr(p.first, p.second) << "\n";
 }
 int main()
