@@ -23,10 +23,6 @@ void solve()
     loop(0,n){
         cin>>arr[i];
     }
-    // loop(0,n){
-    //     cout<<arr[i]<<" ";
-    // }
-
     int idx=-1;
     ll ts=INT64_MIN;
     loop(0,n){
@@ -34,28 +30,27 @@ void solve()
             idx=i;
             break;
         }
-        // ts+=arr[i];
     }
-    if(idx==-1){
-        ll curr1=0;
-        loop(0,n){
-            curr1+=arr[i];
-            ts=max(ts,curr1);
-            if(curr1<0){
-                curr1=0;
-            }
-        }
-        if(ts==k){
-            cout<<"Yes"<<endl;
-            loop(0,n){
-                cout<<arr[i]<<" ";
-            }
-            cout<<endl;
-            return;
-        }
-        cout<<"No"<<endl;
-        return;
-    }
+    // if(idx==-1){
+    //     ll curr1=0;
+    //     loop(0,n){
+    //         curr1+=arr[i];
+    //         ts=max(ts,curr1);
+    //         if(curr1<0){
+    //             curr1=0;
+    //         }
+    //     }
+    //     if(ts==k){
+    //         cout<<"Yes"<<endl;
+    //         loop(0,n){
+    //             cout<<arr[i]<<" ";
+    //         }
+    //         cout<<endl;
+    //         return;
+    //     }
+    //     cout<<"No"<<endl;
+    //     return;
+    // }
     ll s1=INT64_MIN;
     ll s2=INT64_MIN;
     ll curr1=0;
