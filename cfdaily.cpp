@@ -15,97 +15,29 @@ typedef vector<ll> vll;
 
 void solve()
 {
-    ll n,k;
-    cin>>n>>k;
-    string s;
-    cin>>s;
-    vll arr(n);
-    loop(0,n){
+    int n;
+    cin>>n;
+    vll arr(n+1,0);
+    loop(1,n+1){
         cin>>arr[i];
     }
-    int idx=-1;
-    ll ts=INT64_MIN;
-    loop(0,n){
-        if(s[i]=='0'){
-            idx=i;
-            break;
-        }
+    //dp1[i] represents the minimum number of balls that can't be deleted in prefix array [1...i]
+    vll dp1(n+1,n+10);
+    /*dp2[i] represents the minimum number of balls that can't be deleted in all possible prefix array [1...x]
+    where arr[x]=i
+    */
+    vll dp2(n+1,n+10);
+    dp1[0]=0;
+    for(int i=1;i<=n;i++){
+        dp1[i]=min(dp1[i-1]+1,dp2[arr[i]]);
+        // if(dp1[dp2[arr[]]])
+        dp2[arr[i]]=min(dp2[arr[i]],dp1[i-1]);
     }
-    // if(idx==-1){
-    //     ll curr1=0;
-    //     loop(0,n){
-    //         curr1+=arr[i];
-    //         ts=max(ts,curr1);
-    //         if(curr1<0){
-    //             curr1=0;
-    //         }
-    //     }
-    //     if(ts==k){
-    //         cout<<"Yes"<<endl;
-    //         loop(0,n){
-    //             cout<<arr[i]<<" ";
-    //         }
-    //         cout<<endl;
-    //         return;
-    //     }
-    //     cout<<"No"<<endl;
-    //     return;
+    // loop(0,n+1){
+    //     cout<<dp1[i]<<" ";
     // }
-    ll s1=INT64_MIN;
-    ll s2=INT64_MIN;
-    ll curr1=0;
-    for(int i=idx-1;i>=0;i--){
-        if(i<0){
-            break;
-        }
-        curr1+=arr[i];
-        s1=max(s1,curr1);
-    }
-    curr1=0;
-    for(int i=idx+1;i<n;i++){
-        if(s[i]=='0'){
-            break;
-        }
-        curr1+=arr[i];
-        s2=max(s2,curr1);
-    }
-    if(s2==INT64_MIN){
-        s2=0;
-    }
-    if(s1==INT64_MIN){
-        s1=0;
-    }
-    arr[idx]=k-max(s1,max(s2,s1+s2));
-    for(int i=0;i<n;i++){
-        if(idx==i) continue;
-        if(s[i]=='0'){
-            arr[i]=-1e18;
-        }
-    }
-    ll chker=INT64_MIN;
-    curr1=0;
-    for(int i=0;i<n;i++){
-        if(arr[i]==-1e18){
-            chker=max(chker,curr1);
-            curr1=0;
-            continue;
-        }
-        curr1+=arr[i];
-        chker=max(chker,curr1);
-        if(curr1<0){
-            curr1=0;
-        }
-    }
-    
-    if(chker!=k){
-        cout<<"No"<<endl;
-        return;
-    }
-    cout<<"Yes"<<endl;
-    loop(0,n){
-        cout<<arr[i]<<" ";
-    }
-    cout<<endl;
+    // cout<<endl;
+    cout<<n-dp1[n]<<endl;
 }
 int main()
 {

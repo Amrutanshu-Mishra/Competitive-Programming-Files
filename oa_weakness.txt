@@ -2,3 +2,4 @@
 2.Aptitude and Reasoning
 3.Kosaraju's algorithm
 4.forgetting to keep mobile silent
+5.Microprocssor and microcontroller
