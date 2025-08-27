@@ -13,31 +13,59 @@ typedef vector<vi> vvi;
 typedef pair<int, int> ii;
 typedef vector<ll> vll;
 
+void dfs(vll &arr, int i, vector<bool>&vis, vll &tmp){
+    if(vis[i]){
+        return;
+    }
+    if(arr[i]==i){
+        vis[i]=true;
+        tmp.push_back(i);
+        return;
+    }
+    vis[i]=true;
+    tmp.push_back(i);
+    dfs(arr,arr[i],vis,tmp);
+}
+
 void solve()
 {
     int n;
     cin>>n;
-    vll arr(n+1,0);
+    vll arr(n+1);
+    map<int,int>idx;
+    map<int,int>val;
     loop(1,n+1){
         cin>>arr[i];
+        idx[arr[i]]=i;
+        val[i]=arr[i];
     }
-    //dp1[i] represents the minimum number of balls that can't be deleted in prefix array [1...i]
-    vll dp1(n+1,n+10);
-    /*dp2[i] represents the minimum number of balls that can't be deleted in all possible prefix array [1...x]
-    where arr[x]=i
-    */
-    vll dp2(n+1,n+10);
-    dp1[0]=0;
+    vector<vll>v;
+    vector<bool>vis(n+1,false);
+    vis[0]=true;
     for(int i=1;i<=n;i++){
-        dp1[i]=min(dp1[i-1]+1,dp2[arr[i]]);
-        // if(dp1[dp2[arr[]]])
-        dp2[arr[i]]=min(dp2[arr[i]],dp1[i-1]);
+        if(!vis[i]){
+            vll tmp;
+            dfs(arr,i,vis,tmp);
+            v.push_back(tmp);
+        }
     }
-    // loop(0,n+1){
-    //     cout<<dp1[i]<<" ";
-    // }
-    // cout<<endl;
-    cout<<n-dp1[n]<<endl;
+    ll ans=0;
+    for(auto v1:v){
+        ll ans1=0;
+        for(int i=0;i<v1.size();i++){
+            if(idx[arr[v1[i]]]==arr[v1[i]]){
+                continue;
+            }
+            int idx1=idx[arr[v1[i]]];
+            int val1=arr[v1[i]];
+            int val2=val[arr[v1[i]]];
+            val[arr[v1[i]]]=arr[v1[i]];
+            val[idx1]=val2;
+            idx[val2]=idx1;
+            idx[arr[v1[i]]]=arr[v1[i]];
+            ans1++;
+        }   
+    }
 }
 int main()
 {
