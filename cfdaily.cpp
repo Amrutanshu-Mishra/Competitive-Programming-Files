@@ -29,49 +29,81 @@ void dfs(vll &arr, int i, vector<bool>&vis, vll &tmp){
 
 void solve()
 {
-    int n;
-    cin>>n;
-    vll arr(n+1);
-    map<int,int>idx;
-    map<int,int>val;
-    loop(1,n+1){
+    ll n,m,k;
+    cin>>n>>m>>k;
+    vll arr(n);
+    vll ans;
+    ans.push_back(-1);
+    loop(0,n){
         cin>>arr[i];
-        idx[arr[i]]=i;
-        val[i]=arr[i];
     }
-    vector<vll>v;
-    vector<bool>vis(n+1,false);
-    vis[0]=true;
-    for(int i=1;i<=n;i++){
-        if(!vis[i]){
-            vll tmp;
-            dfs(arr,i,vis,tmp);
-            v.push_back(tmp);
+    vll v=arr;
+    sort(v.begin(),v.end());
+    int idx=n-m*k;
+    // int i=0;
+    int j=0;
+    int count=0;
+    int left=k;
+    while (j<arr.size())
+    {
+        int l=lower_bound(v.begin()+idx,v.end(),arr[j])-v.begin();
+        if(v[l]>v[idx]){
+            j++;
+            count++;
+            // continue;
+        }
+        else if(v[l]==arr[j] && v[l]==v[idx]){
+            j++;
+            count++;
+            idx++;
+        }
+        else{
+            j++;
+            // count++;
+        }
+        if(count==m || n-j==m*(left-1)){
+            ans.push_back(j-1);
+            count=0;
+            left--;
+        }
+        if(left==1){
+            break;
         }
     }
-    ll ans=0;
-    for(auto v1:v){
-        ll ans1=0;
-        for(int i=0;i<v1.size();i++){
-            if(idx[arr[v1[i]]]==arr[v1[i]]){
-                continue;
-            }
-            int idx1=idx[arr[v1[i]]];
-            int val1=arr[v1[i]];
-            int val2=val[arr[v1[i]]];
-            val[arr[v1[i]]]=arr[v1[i]];
-            val[idx1]=val2;
-            idx[val2]=idx1;
-            idx[arr[v1[i]]]=arr[v1[i]];
-            ans1++;
-        }   
+    ans.push_back(n-1);
+    ll fsum=0;
+    for(int i=1;i<ans.size();i++){
+        int a=ans[i-1];
+        int b=ans[i];
+        // cout<<a<<" "<<b<<endl;
+        priority_queue<ll>pq;
+        for(int j=a+1;j<=b;j++){
+            pq.push(arr[j]);
+        }
+        int curr=m;
+        while(curr--){
+            fsum+=pq.top();
+            pq.pop();
+        }
     }
+    cout<<fsum<<endl;
+    // for(auto i:ans){
+    //     if(i==-1||i==n-1){
+    //         continue;
+    //     }
+    //     cout<<i+1<<" ";
+    // }
+    // cout<<endl;
+    for(int i=1;i<k;i++){
+        cout<<ans[i]+1<<" ";
+    }
+    cout<<endl;
 }
 int main()
 {
     int t;
     t=1;
-    cin >> t;
+    // cin >> t;
     for (int j = 0; j < t; j++)
     {
         solve();
