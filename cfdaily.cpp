@@ -26,84 +26,70 @@ void dfs(vll &arr, int i, vector<bool>&vis, vll &tmp){
     tmp.push_back(i);
     dfs(arr,arr[i],vis,tmp);
 }
-
+bool stressTest(vector<vll>&arr){
+    for(int i=0;i<arr.size();i++){
+        for(int j=0;j<arr[0].size();j++){
+            if(j+1<arr[0].size() && arr[i][j]==arr[i][j+1]){
+                cout<<i<<" "<<j<<endl;
+                return false;
+            }
+            if(i+1<arr.size() && arr[i+1][j]==arr[i][j]){
+                cout<<i<<" "<<j<<endl;
+                return false;
+            }
+        }
+    }
+    return true;
+}
 void solve()
 {
-    ll n,m,k;
-    cin>>n>>m>>k;
-    vll arr(n);
-    vll ans;
-    ans.push_back(-1);
-    loop(0,n){
-        cin>>arr[i];
+    int n;
+    cin>>n;
+    vector<pair<ll,ll>>v;
+    ll p1=INT64_MAX;
+    ll p2=INT64_MAX;
+    for(int i=0;i<n;i++){
+        ll x,y;
+        cin>>x>>y;
+        v.push_back({x,y});
+        p1=min(p1,x+y);
+        p2=min(p2,x-y);
     }
-    vll v=arr;
-    sort(v.begin(),v.end());
-    int idx=n-m*k;
-    // int i=0;
-    int j=0;
-    int count=0;
-    int left=k;
-    while (j<arr.size())
-    {
-        int l=lower_bound(v.begin()+idx,v.end(),arr[j])-v.begin();
-        if(v[l]>v[idx]){
-            j++;
-            count++;
-            // continue;
-        }
-        else if(v[l]==arr[j] && v[l]==v[idx]){
-            j++;
-            count++;
-            idx++;
-        }
-        else{
-            j++;
-            // count++;
-        }
-        if(count==m || n-j==m*(left-1)){
-            ans.push_back(j-1);
-            count=0;
-            left--;
-        }
-        if(left==1){
-            break;
-        }
-    }
-    ans.push_back(n-1);
-    ll fsum=0;
-    for(int i=1;i<ans.size();i++){
-        int a=ans[i-1];
-        int b=ans[i];
-        // cout<<a<<" "<<b<<endl;
-        priority_queue<ll>pq;
-        for(int j=a+1;j<=b;j++){
-            pq.push(arr[j]);
-        }
-        int curr=m;
-        while(curr--){
-            fsum+=pq.top();
-            pq.pop();
-        }
-    }
-    cout<<fsum<<endl;
-    // for(auto i:ans){
-    //     if(i==-1||i==n-1){
-    //         continue;
-    //     }
-    //     cout<<i+1<<" ";
-    // }
-    // cout<<endl;
-    for(int i=1;i<k;i++){
-        cout<<ans[i]+1<<" ";
-    }
-    cout<<endl;
+    ll ex=1e9;
+    ll res;
+    cout<<"?"<<" L "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    cout<<"?"<<" L "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    cout<<"?"<<" D "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    cout<<"?"<<" D "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    ll val1=p1-res+4*ex;
+    cout<<"?"<<" U "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    cout<<"?"<<" U "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    cout<<"?"<<" U "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    cout<<"?"<<" U "<<ex<<endl;
+    cin>>res;
+    cout.flush();
+    ll val2=p2-res+4*ex;
+    cout<<"! "<<(val1+val2)/2<<" "<<(val1-val2)/2<<endl;
 }
 int main()
 {
     int t;
     t=1;
-    // cin >> t;
+    cin >> t;
     for (int j = 0; j < t; j++)
     {
         solve();

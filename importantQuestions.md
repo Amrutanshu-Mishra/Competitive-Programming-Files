@@ -9,3 +9,5 @@
 | 1500 | [CF906B](https://codeforces.com/problemset/problem/1842/C) | [Editorial](https://codeforces.com/blog/entry/117606) | i know that if you want to delete a ball you may have multiple balls of the same color previously so which previous ball should you choose? the answer is for which the dp1's value is minimum(and this value is stored in dp2);
 | Hard | [CF906B](https://leetcode.com/problems/binary-tree-cameras/description/?envType=problem-list-v2&envId=nbx4mwx6) | [Editorial]() | here 0 = no camera , 1=not needed and 2=has camera
 | 1500 | [CF906B](https://codeforces.com/problemset/problem/1114/B) | [Editorial](https://codeforces.com/blog/entry/65136) | the highest possible sum for a given array will be if the sum=sum of the last m*k elements of the array(if the array is sorted) so the idea is enable this case to happen
+| Med | [2768](https://leetcode.com/problems/number-of-black-blocks/?envType=problem-list-v2&envId=nbx4mwx6) | try this again
+| 1600 | [CF906B](https://codeforces.com/contest/2136/problem/D) | [Editorial](https://codeforces.com/blog/entry/145796) | the idea is to make the robot go to the edge of the board(very intresting)
