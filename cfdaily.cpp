@@ -13,82 +13,71 @@ typedef vector<vi> vvi;
 typedef pair<int, int> ii;
 typedef vector<ll> vll;
 
-void dfs(vll &arr, int i, vector<bool>&vis, vll &tmp){
-    if(vis[i]){
-        return;
-    }
-    if(arr[i]==i){
-        vis[i]=true;
-        tmp.push_back(i);
-        return;
-    }
-    vis[i]=true;
-    tmp.push_back(i);
-    dfs(arr,arr[i],vis,tmp);
-}
-bool stressTest(vector<vll>&arr){
-    for(int i=0;i<arr.size();i++){
-        for(int j=0;j<arr[0].size();j++){
-            if(j+1<arr[0].size() && arr[i][j]==arr[i][j+1]){
-                cout<<i<<" "<<j<<endl;
-                return false;
-            }
-            if(i+1<arr.size() && arr[i+1][j]==arr[i][j]){
-                cout<<i<<" "<<j<<endl;
-                return false;
-            }
-        }
-    }
-    return true;
-}
 void solve()
 {
-    int n;
-    cin>>n;
-    vector<pair<ll,ll>>v;
-    ll p1=INT64_MAX;
-    ll p2=INT64_MAX;
-    for(int i=0;i<n;i++){
-        ll x,y;
-        cin>>x>>y;
-        v.push_back({x,y});
-        p1=min(p1,x+y);
-        p2=min(p2,x-y);
+    long long n,k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    vector<long long> a(n);
+    for (auto &x : a)
+        cin >> x;
+
+    int pos = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '0')
+        {
+            pos = i;
+            a[i] = -1e13;
+        }
     }
-    ll ex=1e9;
-    ll res;
-    cout<<"?"<<" L "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    cout<<"?"<<" L "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    cout<<"?"<<" D "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    cout<<"?"<<" D "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    ll val1=p1-res+4*ex;
-    cout<<"?"<<" U "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    cout<<"?"<<" U "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    cout<<"?"<<" U "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    cout<<"?"<<" U "<<ex<<endl;
-    cin>>res;
-    cout.flush();
-    ll val2=p2-res+4*ex;
-    cout<<"! "<<(val1+val2)/2<<" "<<(val1-val2)/2<<endl;
+
+    long long mx = 0;
+    long long curr = 0;
+    for (int i = 0; i < n; i++)
+    {
+        curr = max(curr + a[i], a[i]);
+        mx = max(mx, curr);
+    }
+    if (mx > k || (mx != k && pos == -1))
+    {
+        cout << "No\n";
+        return;
+    }
+    if (pos != -1)
+    {
+        mx = 0, curr = 0;
+        long long L, R;
+
+        for (int i = pos + 1; i < n; i++)
+        {
+            curr += a[i];
+            mx = max(mx, curr);
+        }
+        L = mx;
+        mx = 0;
+        curr = 0;
+        for (int i = pos - 1; i >= 0; i--)
+        {
+            curr += a[i];
+            mx = max(mx, curr);
+        }
+        R = mx;
+
+        a[pos] = k - L - R;
+    }
+
+    cout << "Yes\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << a[i] << " \n"[i + 1 == n];
+    }
 }
 int main()
 {
     int t;
-    t=1;
+    t = 1;
     cin >> t;
     for (int j = 0; j < t; j++)
     {
