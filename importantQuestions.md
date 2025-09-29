@@ -13,3 +13,5 @@
 | 1600 | [CF906B](https://codeforces.com/contest/2136/problem/D) | [Editorial](https://codeforces.com/blog/entry/145796) | the idea is to make the robot go to the edge of the board(very intresting)
 | 1700 | [CF870D](https://codeforces.com/contest/1826/problem/D) | [Editorial](https://codeforces.com/blog/entry/115892) | the main idea is to spot that in the formula val=bi1+bi2+bi3−(r−l) if i1<i2<i3 then i1=l and i3=r since if this not the case then val won't be maximum then the formula rearranges to val=(bi1+l) + bi2 + (bi3-r) and for that we need three arrays. 
 | 1500 | [CF870D](https://codeforces.com/problemset/problem/2107/C) | [Editorial](https://codeforces.com/blog/entry/142642) | try this again as you couldn't solve it
+| medium | [1733](https://leetcode.com/problems/minimum-number-of-people-to-teach/?envType=daily-question&envId=2025-09-10) | this was a very good adhoc which i couldn't solve
+| hard | [VK round 1 D](https://codeforces.com/contest/161/problem/D) | dp on tree + (inclusion - exclusion)
