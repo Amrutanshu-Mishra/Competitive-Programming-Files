@@ -75,14 +75,7 @@ ll modexp(ll a)
 
 void solve()
 {
-     ll x,d;
-     cin>>x>>d;
-     if(2*x<=d){
-          cout<<"double it"<<endl;
-     }
-     else{
-          cout<<"take it"<<endl;
-     }
+     
 }     
 int main()
 {
