@@ -75,7 +75,7 @@ ll modexp(ll a)
 
 void solve()
 {
-     
+     int n;
 }     
 int main()
 {
