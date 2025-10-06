@@ -72,15 +72,51 @@ ll modexp(ll a)
 {
      return binexp(a, M - 2, M);
 }
+vector<vll>c;
+vector<vll>dp(21,vll(1<<21,-1));
+
+long long helper(int i, int n, long long &mask){
+     if(i==n+1){
+          return 0;
+     }
+
+     
+}
 
 void solve()
 {
+     // int n;
+     // cin>>n;
+
+     // c=vector<vll>(n,vll(n));
+     // dp=vector<vll>(21,vll(1<<21,-1));
+     // loop(0,n){
+     //      for(int j=0;j<n;j++){
+     //           cin>>c[i][j];
+     //      }
+     // }
      int n;
-}     
+     cin>>n;
+     int cnt=0;
+     int wg=n;
+     int lg=0;
+     while (wg>1||lg>1)
+     {
+          int nlg=wg/2;
+          cnt+=wg/2;
+          int nwg=wg/2+wg%2;
+          cnt+=lg/2;
+          nlg+=lg/2+lg%2;
+          wg=nwg;
+          lg=nlg;
+     }
+     cnt++;
+     cout<<cnt<<endl;
+}
 int main()
 {
-     int t=1;
-     // cin >> t;
+     int t = 1;
+     cin >> t;
      for (int j = 0; j < t; j++)
      {
           solve();
