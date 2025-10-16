@@ -72,50 +72,63 @@ ll modexp(ll a)
 {
      return binexp(a, M - 2, M);
 }
-vector<vll>c;
-vector<vll>dp(21,vll(1<<21,-1));
 
-long long helper(int i, int n, long long &mask){
-     if(i==n+1){
-          return 0;
+ll dp[10][2][81];
+unordered_map<int,bool>isP;
+
+ll helper(string &s, int idx, int tight, int sum){
+     if(idx==s.size()){
+          return isP[sum];
+     }
+     // cout<<"J"<<endl;
+     if(dp[idx][tight][sum]!=-1){
+          return dp[idx][tight][sum];
      }
 
-     
+     int limit=tight ? (s[idx]-'0') : 9;
+     ll ans=0;
+
+     for(int i=0;i<=limit;i++){
+          int updatedSum=sum+i;
+          ans+=helper(s, idx+1, tight && (i==(s[idx]-'0')), updatedSum);
+     }
+     return dp[idx][tight][sum]=ans;
 }
 
 void solve()
 {
-     // int n;
-     // cin>>n;
+     ll l,r;
+     cin>>l>>r;
 
-     // c=vector<vll>(n,vll(n));
-     // dp=vector<vll>(21,vll(1<<21,-1));
-     // loop(0,n){
-     //      for(int j=0;j<n;j++){
-     //           cin>>c[i][j];
-     //      }
-     // }
-     int n;
-     cin>>n;
-     int cnt=0;
-     int wg=n;
-     int lg=0;
-     while (wg>1||lg>1)
-     {
-          int nlg=wg/2;
-          cnt+=wg/2;
-          int nwg=wg/2+wg%2;
-          cnt+=lg/2;
-          nlg+=lg/2+lg%2;
-          wg=nwg;
-          lg=nlg;
+     string ri=to_string(r);
+     memset(dp, -1, sizeof(dp));
+     // cout<<"j"<<endl;
+     ll ans1=helper(ri, 0, 1, 0);
+     if(l==0){
+          cout<<ans1<<endl;
+          return;
      }
-     cnt++;
-     cout<<cnt<<endl;
+
+     string li=to_string(l-1);
+     memset(dp, -1, sizeof(dp));
+     ll ans2=helper(li, 0, 1, 0);
+
+     cout<<ans1-ans2<<endl;
 }
 int main()
 {
-     int t = 1;
+     int t=1;
+     for(int i=2;i<=81;i++){
+          bool prim=true;
+          for(int j=2;j*j<=i;j++){
+               if(i%j==0){
+                    prim=false;
+                    break;
+               }
+          }
+          isP[i]=prim;
+     }
+
      cin >> t;
      for (int j = 0; j < t; j++)
      {
