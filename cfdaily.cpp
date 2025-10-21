@@ -73,63 +73,102 @@ ll modexp(ll a)
      return binexp(a, M - 2, M);
 }
 
-ll dp[10][2][81];
-unordered_map<int,bool>isP;
-
-ll helper(string &s, int idx, int tight, int sum){
-     if(idx==s.size()){
-          return isP[sum];
-     }
-     // cout<<"J"<<endl;
-     if(dp[idx][tight][sum]!=-1){
-          return dp[idx][tight][sum];
-     }
-
-     int limit=tight ? (s[idx]-'0') : 9;
-     ll ans=0;
-
-     for(int i=0;i<=limit;i++){
-          int updatedSum=sum+i;
-          ans+=helper(s, idx+1, tight && (i==(s[idx]-'0')), updatedSum);
-     }
-     return dp[idx][tight][sum]=ans;
-}
+int spf[200010];
 
 void solve()
 {
-     ll l,r;
-     cin>>l>>r;
+     int n;
+     cin>>n;
 
-     string ri=to_string(r);
-     memset(dp, -1, sizeof(dp));
-     // cout<<"j"<<endl;
-     ll ans1=helper(ri, 0, 1, 0);
-     if(l==0){
-          cout<<ans1<<endl;
-          return;
+     vll arr(n);
+     loop(0,n){
+          cin>>arr[i];
      }
 
-     string li=to_string(l-1);
-     memset(dp, -1, sizeof(dp));
-     ll ans2=helper(li, 0, 1, 0);
+     vll b(n);
+     loop(0,n){
+          cin>>b[i];
+     }
 
-     cout<<ans1-ans2<<endl;
+     set<ll>st;
+     map<ll,int>m1;
+     loop(0,n){
+          set<ll>curr;
+          ll a=arr[i];
+          while(a>1){
+               if(st.find(spf[a])!=st.end()){
+                    cout<<0<<endl;
+                    return;
+               }
+               m1[spf[a]]++;
+               curr.insert(spf[a]);
+               a/=spf[a];
+          }
+          for(auto p:curr){
+               // cout<<p<<" ";
+               st.insert(p);
+          }
+     }
+     
+     // cout<<"J"<<endl;
+     
+     loop(0,n){
+          set<ll>curr;
+          map<ll,int>m2;
+          
+          ll a=arr[i];
+          while(a>1){
+               m1[spf[a]]--;
+               m2[spf[a]]++;
+               curr.insert(spf[a]);
+               if(m1[spf[a]]==0){
+                    st.erase(spf[a]);
+               }
+               a/=spf[a];
+          }
+          
+          a=arr[i]+1;
+          // cout<<"J"<<endl;
+          while(a>1){
+               // cout<<a<<" ";
+               if(st.find(spf[a])!=st.end()){
+                    // cout<<spf[a]<<endl;
+                    cout<<1<<endl;
+                    return;
+               }
+     
+               a/=spf[a];
+          }
+          // cout<<endl;
+          for(auto p:curr){
+               m1[p]+=m2[p];
+               st.insert(p);
+          }
+     }     
+     cout<<2<<endl;
 }
 int main()
 {
-     int t=1;
-     for(int i=2;i<=81;i++){
-          bool prim=true;
-          for(int j=2;j*j<=i;j++){
-               if(i%j==0){
-                    prim=false;
-                    break;
-               }
-          }
-          isP[i]=prim;
+     int t = 1;
+     cin >> t;
+
+     for(int i=0;i<=200010;i++){
+          spf[i]=i;
      }
 
-     cin >> t;
+     for(int i=2;i*i<=200010;i++){
+          if(spf[i]==i){
+               for(int j=i*i;j<=200010;j+=i){
+                    if(spf[j]==j){
+                         spf[j]=i;
+                    }
+               }
+          }
+     }
+     // loop(0,50){
+     //      cout<<spf[i]<<" ";
+     // }
+     // cout<<endl;
      for (int j = 0; j < t; j++)
      {
           solve();
