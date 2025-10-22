@@ -73,7 +73,7 @@ ll modexp(ll a)
      return binexp(a, M - 2, M);
 }
 
-int spf[200010];
+int spf[500010];
 
 void solve()
 {
@@ -111,6 +111,7 @@ void solve()
      }
      
      // cout<<"J"<<endl;
+     ll ans1=INT32_MAX;
      
      loop(0,n){
           set<ll>curr;
@@ -128,13 +129,18 @@ void solve()
           }
           
           a=arr[i]+1;
-          // cout<<"J"<<endl;
+          // if(i==1){
+          //      cout<<a<<" j\n";
+          // }
           while(a>1){
-               // cout<<a<<" ";
+               // if(i==1){
+               //      cout<<spf[a]<<endl;
+               // }
                if(st.find(spf[a])!=st.end()){
-                    // cout<<spf[a]<<endl;
-                    cout<<1<<endl;
-                    return;
+                    ans1=min(ans1, b[i]);
+                    // if(i==1){
+                    //      cout<<b[i]<<" H "<<ans1<<endl;
+                    // }
                }
      
                a/=spf[a];
@@ -145,20 +151,68 @@ void solve()
                st.insert(p);
           }
      }     
-     cout<<2<<endl;
+     // cout<<endl;
+     // if(ans1==INT32_MAX){
+     //      cout<<"Yes"<<endl;
+     // }
+     ll ub1=INT64_MIN;
+     vector<pair<ll,ll>>v;
+     loop(0,n){
+          v.push_back({b[i], arr[i]});
+          ub1=max(ub1,arr[i]);
+     }
+     sort(v.begin(), v.end());
+     ans1=min(ans1,v[0].first+v[1].first);
+     // cout<<ans1<<endl;
+     
+     
+     set<ll>curr;
+     map<ll,int>m2;
+     ll a=v[0].second;
+     while (a>1)
+     {
+          m1[spf[a]]--;
+          m2[spf[a]]++;
+          curr.insert(spf[a]);
+          if(m1[spf[a]]==0){
+               st.erase(spf[a]);
+          }
+          a/=spf[a];
+     }
+     // for(auto i:st){
+     //      cout<<i<<" ";
+     // }
+     // cout<<endl;
+     // cout<<v[0].second+2*ub1-v[0].second<<endl;
+     // cout<<ans1<<endl;
+     // cout<<"H"<<endl;
+     // cout<<ub1<<endl;
+     if(st.size()==0){
+          cout<<ans1<<endl;
+          return;
+     }
+
+     ll p1=*st.begin();
+     for(auto p2:curr){
+          if(st.find(p2)!=st.end()){
+               
+          }
+     }
+     ans1=min(ans1, ((p1-(v[0].second%p1))%p1)*v[0].first);
+     cout<<ans1<<endl;
 }
 int main()
 {
      int t = 1;
      cin >> t;
 
-     for(int i=0;i<=200010;i++){
+     for(int i=0;i<500010;i++){
           spf[i]=i;
      }
 
-     for(int i=2;i*i<=200010;i++){
+     for(int i=2;i*i<500010;i++){
           if(spf[i]==i){
-               for(int j=i*i;j<=200010;j+=i){
+               for(int j=i*i;j<500010;j+=i){
                     if(spf[j]==j){
                          spf[j]=i;
                     }
