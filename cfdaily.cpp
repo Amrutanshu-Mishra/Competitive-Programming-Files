@@ -77,148 +77,51 @@ int spf[500010];
 
 void solve()
 {
-     int n;
-     cin>>n;
+     ll n,k;
+     cin>>n>>k;
 
      vll arr(n);
      loop(0,n){
           cin>>arr[i];
      }
 
-     vll b(n);
+     sort(arr.begin(), arr.end());
      loop(0,n){
-          cin>>b[i];
+          cout<<arr[i]<<" ";
+     }
+     cout<<endl;
+     ll ans=1;
+
+     vll fac;
+     for(int i=1;i<=n;i++){
+          if(arr[k]%i==0){
+               fac.push_back(i);
+          }
      }
 
-     set<ll>st;
-     map<ll,int>m1;
-     loop(0,n){
-          set<ll>curr;
-          ll a=arr[i];
-          while(a>1){
-               if(st.find(spf[a])!=st.end()){
-                    cout<<0<<endl;
-                    return;
+     for(auto f:fac){
+          bool pos=true;
+          for(int i=k;i<n;i++){
+               if(arr[i]%f==0){
+                    continue;
                }
-               m1[spf[a]]++;
-               curr.insert(spf[a]);
-               a/=spf[a];
-          }
-          for(auto p:curr){
-               // cout<<p<<" ";
-               st.insert(p);
-          }
-     }
-     
-     // cout<<"J"<<endl;
-     ll ans1=INT32_MAX;
-     
-     loop(0,n){
-          set<ll>curr;
-          map<ll,int>m2;
-          
-          ll a=arr[i];
-          while(a>1){
-               m1[spf[a]]--;
-               m2[spf[a]]++;
-               curr.insert(spf[a]);
-               if(m1[spf[a]]==0){
-                    st.erase(spf[a]);
+               if(arr[i]>4*f){
+                    continue;
                }
-               a/=spf[a];
+               pos=false;
           }
-          
-          a=arr[i]+1;
-          // if(i==1){
-          //      cout<<a<<" j\n";
-          // }
-          while(a>1){
-               // if(i==1){
-               //      cout<<spf[a]<<endl;
-               // }
-               if(st.find(spf[a])!=st.end()){
-                    ans1=min(ans1, b[i]);
-                    // if(i==1){
-                    //      cout<<b[i]<<" H "<<ans1<<endl;
-                    // }
-               }
-     
-               a/=spf[a];
+          if(pos){
+               ans=max(ans,f);
           }
-          // cout<<endl;
-          for(auto p:curr){
-               m1[p]+=m2[p];
-               st.insert(p);
-          }
-     }     
-     // cout<<endl;
-     // if(ans1==INT32_MAX){
-     //      cout<<"Yes"<<endl;
-     // }
-     ll ub1=INT64_MIN;
-     vector<pair<ll,ll>>v;
-     loop(0,n){
-          v.push_back({b[i], arr[i]});
-          ub1=max(ub1,arr[i]);
-     }
-     sort(v.begin(), v.end());
-     ans1=min(ans1,v[0].first+v[1].first);
-     // cout<<ans1<<endl;
-     
-     
-     set<ll>curr;
-     map<ll,int>m2;
-     ll a=v[0].second;
-     while (a>1)
-     {
-          m1[spf[a]]--;
-          m2[spf[a]]++;
-          curr.insert(spf[a]);
-          if(m1[spf[a]]==0){
-               st.erase(spf[a]);
-          }
-          a/=spf[a];
-     }
-     // for(auto i:st){
-     //      cout<<i<<" ";
-     // }
-     // cout<<endl;
-     // cout<<v[0].second+2*ub1-v[0].second<<endl;
-     // cout<<ans1<<endl;
-     // cout<<"H"<<endl;
-     // cout<<ub1<<endl;
-     if(st.size()==0){
-          cout<<ans1<<endl;
-          return;
      }
 
-     ll p1=*st.begin();
-     for(auto p2:curr){
-          if(st.find(p2)!=st.end()){
-               
-          }
-     }
-     ans1=min(ans1, ((p1-(v[0].second%p1))%p1)*v[0].first);
-     cout<<ans1<<endl;
+     cout<<ans<<endl;
 }
 int main()
 {
      int t = 1;
      cin >> t;
 
-     for(int i=0;i<500010;i++){
-          spf[i]=i;
-     }
-
-     for(int i=2;i*i<500010;i++){
-          if(spf[i]==i){
-               for(int j=i*i;j<500010;j+=i){
-                    if(spf[j]==j){
-                         spf[j]=i;
-                    }
-               }
-          }
-     }
      // loop(0,50){
      //      cout<<spf[i]<<" ";
      // }
