@@ -77,41 +77,36 @@ int spf[500010];
 
 void solve()
 {
-     ll n,k;
-     cin>>n>>k;
+     ll h, d;
+     cin >> h >> d;
 
-     vll arr(n);
-     loop(0,n){
-          cin>>arr[i];
-     }
+     ll ans=0;
 
-     sort(arr.begin(), arr.end());
-     loop(0,n){
-          cout<<arr[i]<<" ";
-     }
-     cout<<endl;
-     ll ans=1;
-
-     vll fac;
-     for(int i=1;i<=n;i++){
-          if(arr[k]%i==0){
-               fac.push_back(i);
-          }
-     }
-
-     for(auto f:fac){
-          bool pos=true;
-          for(int i=k;i<n;i++){
-               if(arr[i]%f==0){
-                    continue;
+     while(d>0){
+          ll s=1;
+          ll e=1e9;
+          ll tmp=0;
+          while(s<=e){
+               ll mid=(s+e)/2;
+               // cout<<mid<<" k "<<h<<" ";
+               if((mid*(mid+1)/2)<h){
+                    tmp=max(tmp,mid);
+                    // cout<<"1 ";
+                    s=mid+1;
                }
-               if(arr[i]>4*f){
-                    continue;
+               else{
+                    // cout<<"2 ";
+                    e=mid-1;
                }
-               pos=false;
+               // cout<<endl;
           }
-          if(pos){
-               ans=max(ans,f);
+          // cout<<tmp<<endl;
+          h-=tmp*(tmp+1)/2;
+          ans+=tmp;
+          d-=tmp;
+          if(d>0){
+               ans++;
+               h++;
           }
      }
 
