@@ -77,40 +77,7 @@ int spf[500010];
 
 void solve()
 {
-     ll h, d;
-     cin >> h >> d;
-
-     ll ans=0;
-
-     while(d>0){
-          ll s=1;
-          ll e=1e9;
-          ll tmp=0;
-          while(s<=e){
-               ll mid=(s+e)/2;
-               // cout<<mid<<" k "<<h<<" ";
-               if((mid*(mid+1)/2)<h){
-                    tmp=max(tmp,mid);
-                    // cout<<"1 ";
-                    s=mid+1;
-               }
-               else{
-                    // cout<<"2 ";
-                    e=mid-1;
-               }
-               // cout<<endl;
-          }
-          // cout<<tmp<<endl;
-          h-=tmp*(tmp+1)/2;
-          ans+=tmp;
-          d-=tmp;
-          if(d>0){
-               ans++;
-               h++;
-          }
-     }
-
-     cout<<ans<<endl;
+     
 }
 int main()
 {
