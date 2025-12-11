@@ -72,31 +72,126 @@ ll modexp(ll a)
 {
     return binexp(a, M - 2, M);
 }
+class segtree
+{
+    int segSize;
+    vector<long long> operations;
+
+public:
+    segtree(int n)
+    {
+        segSize = 1;
+        while (segSize < n)
+        {
+            segSize *= 2;
+        }
+        operations.assign(2 * segSize, 0LL);
+    }
+
+    // using build is more optimised then using setVal for the initialization
+    void build(vector<int> &a, int x, int lx, int rx)
+    {
+        if (rx - lx == 1)
+        {
+            if (lx < (int)a.size())
+            {
+                operations[x] = a[lx];
+            }
+            return;
+        }
+
+        int m = (lx + rx) / 2;
+        build(a, 2 * x + 1, lx, m);
+        build(a, 2 * x + 2, m, rx);
+        operations[x] = operations[2 * x + 1] + operations[2 * x + 2];
+    }
+
+    void build(vector<int> &a)
+    {
+        build(a, 0, 0, segSize);
+    }
+
+    void modify(int l, int r, ll v, int x, int lx, int rx)
+    {
+        if (lx >= r || l >= rx)
+        {
+            return;
+        }
+
+        // if [lx,rx] is completely inside given segment [l,r]
+        if (lx >= l && rx <= r)
+        {
+            operations[x] = max(v, operations[x]);
+            return;
+        }
+        // cout<<lx<<" "<<rx<<endl;
+        int m = (lx + rx) / 2;
+
+        modify(l, r, v, 2 * x + 1, lx, m);
+        modify(l, r, v, 2 * x + 2, m, rx);
+    }
+
+    void modify(int l, int r, ll v)
+    {
+        modify(l, r, v, 0, 0, segSize);
+    }
+
+    long long get(int i, int x, int lx, int rx)
+    {
+
+        if (rx - lx == 1)
+        {
+            return operations[x];
+        }
+
+        int m = (lx + rx) / 2;
+
+        long long res = 0;
+        if (i < m)
+        {
+            res = get(i, 2 * x + 1, lx, m);
+        }
+        else
+        {
+            res = get(i, 2 * x + 2, m, rx);
+        }
+        res=max(res, operations[x]);
+        return res;
+    }
+
+    long long get(int i)
+    {
+        return get(i, 0, 0, segSize);
+    }
+
+};
 void solve()
 {
-    int n;
-    cin >> n;
-    vll arr(n);
-    loop(0, n)
+    long long n, m;
+    cin >> n >> m;
+
+    segtree st(n);
+
+    while (m--)
     {
-        cin >> arr[i];
+        int op;
+        cin >> op;
+        if (op == 1)
+        {
+            int l, r;
+            long long v;
+            cin >> l >> r >> v;
+            // cout<<"H "<<l<<" "<<r<<" "<<v<<endl; 
+            st.modify(l,r,v);
+        }
+        else
+        {
+            int i;
+            cin >> i;
+            cout<<st.get(i)<<endl;
+        }
+        // cout<<"he"<<endl;
     }
-
-    vll preg=arr;
-    vll postg=arr;
-    loop(1,n){
-        preg[i]=gcd(preg[i-1], arr[i]);
-    }
-    for(int i=n-2;i>=0;i--){
-        postg[i]=gcd(postg[i+1], arr[i]);
-    }
-    ll ans=postg[0];
-
-    loop(1,n-1){
-        ans+=min(preg[i], postg[i]);
-    }
-
-    cout<<ans<<endl;
 }
 int main()
 {

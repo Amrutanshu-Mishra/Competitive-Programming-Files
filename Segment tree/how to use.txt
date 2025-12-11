@@ -1,0 +1,16 @@
+Segment_tree_for_mass_ops and Segment_tree_for_lazy_propagation is used for questions where the 
+     updation is done on a range and the query is asked for a point or range. However where
+     each has to be used is explained next. 
+
+Segment_tree_for_mass_ops.cpp is used when range queries with commutative and associative operation is asked
+     ,i.e, the operation here refers to that operation where the two child nodes of the segment tree 
+     that is needed to be performed to get the parent of these nodes in the segment tree.
+
+
+Segment_tree_for_lazy_propagation.cpp is used when range queries with non commutative operation is asked
+     ,i.e, the operation here refers to that operation where the two child nodes of the segment tree 
+     that is needed to be performed to get the parent of these nodes in the segment tree.
+
+
+Segment_tree_for_min.cpp and Segment_tree_for_sum is used in case where the updation is done in point
+     and the query is done for a range
