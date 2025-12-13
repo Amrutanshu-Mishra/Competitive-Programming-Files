@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <iomanip>
 using namespace std;
 #define mp make_pair
 #define fi first
@@ -72,130 +73,98 @@ ll modexp(ll a)
 {
     return binexp(a, M - 2, M);
 }
-class segtree
-{
-    int segSize;
-    vector<long long> operations;
 
-public:
-    segtree(int n)
-    {
-        segSize = 1;
-        while (segSize < n)
-        {
-            segSize *= 2;
+void dfs(int node, int parent, vi &depth, vector<vector<int>>&adj){
+    for(auto adjNode:adj[node]){
+        if(adjNode==parent){
+            continue;
         }
-        operations.assign(2 * segSize, 0LL);
+        depth[adjNode]=1+depth[node];
+        dfs(adjNode, node, depth, adj);
+    }
+}
+
+int find_diameter(vector<vector<int>>&adj, int n, vi &depth1, vi &depth2){
+    depth1[0]=0;
+    dfs(0, -1, depth1, adj);
+    int node1=-1;
+    int maxDepth=-1;
+
+    for(int i=0;i<n;i++){
+        if(maxDepth<depth1[i]){
+            maxDepth=depth1[i];
+            node1=i;
+        }
     }
 
-    // using build is more optimised then using setVal for the initialization
-    void build(vector<int> &a, int x, int lx, int rx)
-    {
-        if (rx - lx == 1)
-        {
-            if (lx < (int)a.size())
-            {
-                operations[x] = a[lx];
-            }
-            return;
+    depth2[node1]=0;
+    dfs(node1, -1, depth2, adj);
+    int node2=node1;
+    node1=-1;
+    maxDepth=-1;
+    for(int i=0;i<n;i++){
+        if(maxDepth<depth2[i]){
+            maxDepth=depth2[i];
+            node1=i;
         }
-
-        int m = (lx + rx) / 2;
-        build(a, 2 * x + 1, lx, m);
-        build(a, 2 * x + 2, m, rx);
-        operations[x] = operations[2 * x + 1] + operations[2 * x + 2];
+        depth1[i]=0;
     }
 
-    void build(vector<int> &a)
-    {
-        build(a, 0, 0, segSize);
-    }
+    dfs(node1, -1, depth1, adj);
+    return maxDepth;
+}
 
-    void modify(int l, int r, ll v, int x, int lx, int rx)
-    {
-        if (lx >= r || l >= rx)
-        {
-            return;
-        }
-
-        // if [lx,rx] is completely inside given segment [l,r]
-        if (lx >= l && rx <= r)
-        {
-            operations[x] = max(v, operations[x]);
-            return;
-        }
-        // cout<<lx<<" "<<rx<<endl;
-        int m = (lx + rx) / 2;
-
-        modify(l, r, v, 2 * x + 1, lx, m);
-        modify(l, r, v, 2 * x + 2, m, rx);
-    }
-
-    void modify(int l, int r, ll v)
-    {
-        modify(l, r, v, 0, 0, segSize);
-    }
-
-    long long get(int i, int x, int lx, int rx)
-    {
-
-        if (rx - lx == 1)
-        {
-            return operations[x];
-        }
-
-        int m = (lx + rx) / 2;
-
-        long long res = 0;
-        if (i < m)
-        {
-            res = get(i, 2 * x + 1, lx, m);
-        }
-        else
-        {
-            res = get(i, 2 * x + 2, m, rx);
-        }
-        res=max(res, operations[x]);
-        return res;
-    }
-
-    long long get(int i)
-    {
-        return get(i, 0, 0, segSize);
-    }
-
-};
 void solve()
 {
-    long long n, m;
-    cin >> n >> m;
+    int n;
+    cin>>n;
+    
+    vector<vector<int>>adj1(n);
+    loop(0,n-1){
+        int u,v;
+        cin>>u>>v;
 
-    segtree st(n);
-
-    while (m--)
-    {
-        int op;
-        cin >> op;
-        if (op == 1)
-        {
-            int l, r;
-            long long v;
-            cin >> l >> r >> v;
-            // cout<<"H "<<l<<" "<<r<<" "<<v<<endl; 
-            st.modify(l,r,v);
-        }
-        else
-        {
-            int i;
-            cin >> i;
-            cout<<st.get(i)<<endl;
-        }
-        // cout<<"he"<<endl;
+        u--;v--;
+        adj1[u].push_back(v);
+        adj1[v].push_back(u);
     }
+
+    int m;
+    cin>>m;
+
+    vector<vector<int>>adj2(m);
+    loop(0,m-1){
+        int u,v;
+        cin>>u>>v;
+
+        u--;v--;
+        adj2[u].push_back(v);
+        adj2[v].push_back(u);
+    }    
+
+    vi depth1(n, n+1);
+    vi depth2(n, n+1);
+    vi depth3(m, m+1);
+    vi depth4(m, m+1);
+
+    int d1=find_diameter(adj1, n, depth1, depth2);
+    int d2=find_diameter(adj2, m, depth3, depth4);
+
+    int ans1=1e5;
+    int ans2=1e5;
+    loop(0,n){
+        ans1=min(ans1, max(depth1[i], depth2[i]));
+    }
+    loop(0,m){
+        ans2=min(ans2, max(depth3[i], depth4[i]));
+    }
+
+    // cout<<ans1<<" "<<ans2<<endl;
+    cout<<max({d1,ans1+ans2+1,d2})<<endl;
 }
 int main()
 {
-    int t=1;
+    int t = 1;
     // cin >> t;
     for (int j = 0; j < t; j++)
     {

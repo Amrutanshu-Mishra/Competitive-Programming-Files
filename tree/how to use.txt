@@ -1,1 +1,4 @@
 diameter.cpp is used to find the diameter of a tree (not just binary tree)
+
+lca_with_euler_tour is used to find the lowest common ancestor of two nodes using
+     O(NlogN) preprocessing and O(1) per query.
