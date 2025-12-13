@@ -1,3 +1,6 @@
+Segment_tree_for_range_update_and_query needs to be used when the range update operation is commutative
+     This is used in questions where updation is done on a range and query is also done on a range
+
 Segment_tree_for_mass_ops and Segment_tree_for_lazy_propagation is used for questions where the 
      updation is done on a range and the query is asked for a point or range. However where
      each has to be used is explained next. 
